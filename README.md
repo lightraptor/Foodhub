@@ -1,30 +1,27 @@
-# Code Base Vite + TypeScript
+# Food Hub
 
-This project is a starter template using **Vite** with **TypeScript** and **React**. It includes **Tailwind CSS** for styling, **React Router** for routing, **ESLint** with **Prettier** for code quality and formatting, and **Husky** for Git hooks.
+A modern web application built using React, Redux, Vite, and TypeScript. The project is configured with a strong development environment including ESLint, Prettier, and Husky for code quality, and TailwindCSS for styling.
 
-## Features
+---
 
-- **Vite** for a fast and efficient development experience.
-- **TypeScript** for static typing and enhanced editor support.
-- **React** for building user interfaces.
-- **Tailwind CSS** for utility-first styling.
-- **React Router** for routing within the application.
-- **ESLint** and **Prettier** for code linting and formatting.
-- **Husky** for setting up Git hooks to enforce code standards.
+## Table of Contents
+
+1. [Getting Started](#getting-started)  
+2. [Scripts](#scripts)  
+3. [Dependencies](#dependencies)  
+4. [Development Environment](#development-environment)  
+5. [Features](#features)
+
+---
 
 ## Getting Started
 
-### Prerequisites
-
-Ensure you have **Node.js** and **npm** installed. If not, download them [here](https://nodejs.org/).
-
-### Installation
+To get started with the **Food Hub** project, follow these steps:
 
 1. Clone the repository:
-
    ```bash
    git clone <repository-url>
-   cd code-base-vite-ts
+   cd food-hub
    ```
 
 2. Install dependencies:
@@ -32,83 +29,88 @@ Ensure you have **Node.js** and **npm** installed. If not, download them [here](
    npm install
    ```
 
-### Available Scripts
+3. Start the development server:
+   ```bash
+   npm run dev
+   ```
 
-Here are some commands you can run in this project:
+4. Open your browser at `http://localhost:3000` to see the application running.
 
-- **Start Development Server**
+---
 
-  ```bash
-  npm run dev
-  ```
+## Scripts
 
-  This command starts the Vite development server. By default, you can access it at [http://localhost:5173](http://localhost:5173).
+The project provides the following scripts for managing development and builds:
 
-- **Build for Production**
+| Command               | Description                                        |
+|-----------------------|----------------------------------------------------|
+| `npm run dev`         | Starts the development server using Vite.          |
+| `npm run build`       | Builds the project using TypeScript and Vite.      |
+| `npm run preview`     | Serves the built application for preview.          |
+| `npm run lint`        | Lints the codebase using ESLint.                   |
+| `npm run check:type`  | Performs TypeScript type checking.                 |
+| `npm run check:lint`  | Fixes linting issues and outputs results quietly.  |
+| `npm run check:prettier` | Formats code using Prettier.                     |
+| `npm run check:all`   | Runs all checks (Prettier, ESLint, TypeScript).    |
+| `npm run prepare`     | Prepares Husky hooks for Git pre-commit checks.    |
 
-  ```bash
-  npm run build
-  ```
+---
 
-  Compiles the project using TypeScript and bundles it for production.
+## Dependencies
 
-- **Preview Production Build**
+### Main Dependencies
+- **React**: UI library for building interactive user interfaces.
+- **Redux Toolkit**: For state management with a simplified API.
+- **React Router**: Handles routing in the application.
+- **Axios**: HTTP client for API requests.
+- **React Hook Form**: For managing forms efficiently.
+- **Yup**: Schema validation for form inputs.
+- **React Toastify**: Notifications for user feedback.
 
-  ```bash
-  npm run preview
-  ```
+### Developer Dependencies
+- **TypeScript**: Adds static typing to JavaScript.
+- **Vite**: Development server and build tool.
+- **TailwindCSS**: Utility-first CSS framework for styling.
+- **ESLint**: Enforces code quality and style.
+- **Prettier**: Automatic code formatting.
+- **Husky**: Enables Git hooks for pre-commit checks.
 
-  Serves the production build locally.
+---
 
-- **Lint Code**
+## Development Environment
 
-  ```bash
-  npm run lint
-  ```
+The project uses a robust toolchain for development:
+- **Vite** for fast build and development.
+- **ESLint** and **Prettier** to maintain clean and consistent code.
+- **Husky** to prevent bad commits by enforcing checks during pre-commit.
 
-  Runs **ESLint** on all files to check for code issues.
+### Path Aliases
+`vite-tsconfig-paths` is used to set up path aliases for cleaner imports.
 
-- **Type Check**
+---
 
-  ```bash
-  npm run check:type
-  ```
+## Features
 
-  Verifies TypeScript types.
+- **State Management**: Uses Redux Toolkit for efficient state handling.
+- **Form Handling**: Managed by React Hook Form with Yup for validation.
+- **Responsive Design**: Styled with TailwindCSS for modern layouts.
+- **API Integration**: Axios is used for seamless API communication.
+- **Notifications**: Provides instant feedback with React Toastify.
+- **Code Quality**: Enforced with ESLint and Prettier.
+- **Type Safety**: Built entirely with TypeScript for robust development.
 
-- **Run All Checks**
+---
 
-  ```bash
-  npm run check:all
-  ```
+## Contribution
 
-  Runs Prettier, ESLint, and TypeScript checks to ensure code quality.
+We welcome contributions! Please fork the repository, create a branch, and submit a pull request. Ensure that all checks (`npm run check:all`) pass before submitting.
 
-- **Set Up Husky**
-  ```bash
-  npm run prepare
-  ```
-  Sets up Husky for Git hooks to enforce standards.
+---
 
-## Project Structure
+## License
 
-- **src/** - Main application source code.
-- **public/** - Public assets for the app.
-- **tsconfig.json** - TypeScript configuration.
-- **tailwind.config.js** - Tailwind CSS configuration.
-- **.eslintrc.js** - ESLint configuration.
-- **.prettierrc** - Prettier configuration.
+This project is private and not currently open for public use. If you have any questions, contact the maintainers.
 
-## Tools and Libraries
+--- 
 
-- **Vite** - For a fast and lightweight development setup.
-- **React** - Front-end library for building UI.
-- **TypeScript** - Adds static types to JavaScript.
-- **Tailwind CSS** - Utility-first CSS framework.
-- **React Router** - Handles routing for single-page applications.
-- **ESLint & Prettier** - Tools for linting and formatting code.
-- **Husky** - Tool for managing Git hooks.
-
-## Author
-
-This project is designed to serve as a starter template for modern front-end development with Vite and TypeScript.
+Enjoy developing with **Food Hub**! 🚀
