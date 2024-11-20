@@ -1,16 +1,26 @@
-import { MENU } from 'defines'
-import { AboutPage, HomePage } from 'page'
+import { ROUTES } from 'defines'
+import { useRouteRender } from 'hooks'
+import { AboutPage, HomePage, LoginPage } from 'page'
+import { RegisterPage } from 'page/register'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 
 export const MainRouter = () => {
   const router = createBrowserRouter([
     {
-      path: MENU.Home,
-      element: <HomePage />
+      path: ROUTES.Home,
+      element: useRouteRender(<HomePage />)
     },
     {
-      path: MENU.About,
-      element: <AboutPage />
+      path: ROUTES.About,
+      element: useRouteRender(<AboutPage />)
+    },
+    {
+      path: ROUTES.Login,
+      element: useRouteRender(<LoginPage />)
+    },
+    {
+      path: ROUTES.Register,
+      element: useRouteRender(<RegisterPage />)
     }
   ])
   return <RouterProvider router={router} />

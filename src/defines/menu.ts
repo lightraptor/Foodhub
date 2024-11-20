@@ -1,4 +1,5 @@
 export const MENU = {
   Home: '/',
-  About: '/About'
+  About: '/about',
+  Login: '/login'
 }

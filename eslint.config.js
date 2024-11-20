@@ -35,8 +35,9 @@ export default tseslint.config(
           jsxSingleQuote: true
         }
       ],
-      'no-console': 'error',
-      'react-refresh/only-export-components': ['warn', { allowConstantExport: true }]
+      'no-console': 'warn',
+      'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
+      '@typescript-eslint/no-explicit-any': 'off'
     }
   }
 )
