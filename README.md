@@ -37,7 +37,7 @@ To get started with the **Food Hub** project, follow these steps:
    npm run dev
    ```
 
-4. Open your browser at `http://localhost:3000` to see the application running.
+4. Open your browser at `http://localhost:5173` to see the application running.
 
 ---
 
