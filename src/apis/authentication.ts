@@ -1,4 +1,4 @@
-import { FormLogin, FormRegister } from 'types'
+import { FormLogin, FormRegister } from '@/types'
 import { api, Api } from './api'
 
 export class AuthenticationApi {

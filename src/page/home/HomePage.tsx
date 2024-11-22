@@ -1,16 +1,31 @@
-import { MENU } from 'defines'
-import { useAuth } from 'hooks'
-import { Link } from 'react-router-dom'
+import { fetchProduct } from '@/apis/productApi'
+import { ProductList } from '@/components/listProduct'
+import { Product } from '@/types'
+import { useEffect, useState } from 'react'
 
 export const HomePage = () => {
-  const { logout } = useAuth()
+  const [products, setProducts] = useState<Product[]>([])
+
+  const fetchData = async () => {
+    try {
+      const response = await fetchProduct()
+      const data = await response.data
+      setProducts(data.items)
+    } catch (error) {
+      console.error('Error fetching data:', error)
+    }
+  }
+
+  useEffect(() => {
+    fetchData()
+  }, [])
   return (
     <>
-      <p>Home</p>
-      <Link to={MENU.About}>About</Link>
-      <button onClick={logout} type='button'>
-        Logout
-      </button>
+      <p>Home page</p>
+      <div className='container mx-auto'>
+        <h1 className='text-3xl font-bold text-center my-8'>Our Products</h1>
+        <ProductList products={products} />
+      </div>
     </>
   )
 }

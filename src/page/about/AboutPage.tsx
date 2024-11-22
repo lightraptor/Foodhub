@@ -1,4 +1,4 @@
-import { MENU } from 'defines'
+import { MENU } from '@/defines'
 import { Link } from 'react-router-dom'
 
 export const AboutPage = () => {

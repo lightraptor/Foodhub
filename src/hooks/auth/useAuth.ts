@@ -1,11 +1,11 @@
-import { api } from 'apis/api'
+import { api } from '@/apis/api'
 import { jwtDecode } from 'jwt-decode'
-import { AuthenApis } from 'apis/authentication'
-import { ROUTES, STORAGE } from 'defines'
+import { AuthenApis } from '@/apis/authentication'
+import { ROUTES, STORAGE } from '@/defines'
 import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router'
-import { FormLogin, FormRegister } from 'types'
-import { userActions } from 'store/user'
+import { FormLogin, FormRegister } from '@/types'
+import { userActions } from '@/store/user'
 import { toast } from 'react-toastify'
 
 export const useAuth = () => {
@@ -25,7 +25,7 @@ export const useAuth = () => {
 
       localStorage.setItem(STORAGE.REFRESH_TOKEN, res?.data?.refreshToken)
       toast.success(res?.data?.message, { autoClose: 3000 })
-      navigate(ROUTES.Home)
+      navigate(ROUTES.Home.path)
     } catch (error: any) {
       //console.error('Login error:', error)
       toast.error(error?.response?.data, { autoClose: 3000 })
@@ -39,7 +39,7 @@ export const useAuth = () => {
       if (res?.data?.success) {
         toast.success(res?.data?.message, { autoClose: 3000 })
         //console.log('Registration successful:', res?.data?.message)
-        navigate(ROUTES.Login)
+        navigate(ROUTES.Login.path)
       } else {
         console.error('Registration failed:', res?.data?.message)
       }
@@ -55,7 +55,7 @@ export const useAuth = () => {
     localStorage.removeItem(STORAGE.REFRESH_TOKEN)
     localStorage.removeItem('user')
     localStorage.removeItem('role')
-    navigate(ROUTES.Login)
+    navigate(ROUTES.Login.path)
     dispatch(userActions.clearToken())
   }
   return {

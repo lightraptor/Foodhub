@@ -1,8 +1,8 @@
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
-import { FormLogin } from 'types'
-import { useAuth } from 'hooks'
+import { FormLogin } from '@/types'
+import { useAuth } from '@/hooks'
 
 const schema = yup
   .object({

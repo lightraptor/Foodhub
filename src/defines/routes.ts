@@ -1,11 +1,10 @@
 export const AUTHENTICATION_ROUTES = {
-  Home: '/',
-  About: '/about'
+  Home: { path: '/', label: 'Home' }
 }
 
 export const UN_AUTHENTICATION_ROUTES = {
-  Login: '/login',
-  Register: '/register'
+  Login: { path: '/login', label: 'Login' },
+  Register: { path: '/register', label: 'Register' }
 }
 
 export const ROUTES = {
