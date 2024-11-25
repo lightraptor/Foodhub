@@ -1,5 +1,6 @@
 export const AUTHENTICATION_ROUTES = {
-  Home: { path: '/', label: 'Home' }
+  Home: { path: '/', label: 'Home' },
+  Cart: { path: '/cart', label: 'Cart' }
 }
 
 export const UN_AUTHENTICATION_ROUTES = {

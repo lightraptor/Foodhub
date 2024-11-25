@@ -34,9 +34,8 @@ export function ProductCard({ product }: ProductCardProps) {
       console.error(response.message)
       return
     }
+    localStorage.setItem('cartId', data.id)
     toast.success(response.message, { autoClose: 3000 })
-
-    console.log(`Added ${quantity} ${product.name}(s) to cart`)
   }
 
   return (

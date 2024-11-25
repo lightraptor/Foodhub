@@ -21,3 +21,27 @@ export interface Product {
   }
   productImagesDto: string[] | null
 }
+
+export interface MealProps {
+  id: string
+  totalPrice: number
+  products: MealList[]
+  createdDate: Date
+}
+
+export interface MealList {
+  id: string
+  quantity: number
+  price: number
+  productDetail: MealistDetail
+}
+
+export interface MealistDetail {
+  id: string
+  code: string
+  name: string
+  price: number
+  sellingPrice: number
+  unitName: string
+  thumbnail: string
+}

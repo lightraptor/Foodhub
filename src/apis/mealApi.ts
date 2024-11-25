@@ -1,4 +1,5 @@
 import { baseURL } from '@/constants'
+import { MealProps } from '@/types'
 import axios, { AxiosResponse } from 'axios'
 
 const instance = axios.create({
@@ -39,8 +40,8 @@ export interface Product {
   thumbnail: string
 }
 
-export const getMeal = async (id: string): Promise<ApiResponse<Meal[]>> => {
-  const response: AxiosResponse<ApiResponse<Meal[]>> = await instance.get(`/api/Meal?id=${id}`)
+export const getMeal = async (id: string): Promise<ApiResponse<MealProps>> => {
+  const response: AxiosResponse<ApiResponse<MealProps>> = await instance.get(`/api/Meal?id=${id}`)
   return response.data
 }
 
@@ -55,6 +56,65 @@ export const postMeal = async ({
     const response: AxiosResponse<ApiResponse<Meal>> = await instance.post(`/api/Meal`, {
       productId,
       quantity
+    })
+    return response.data
+  } catch (error) {
+    console.error('Error fetching menus:', error)
+    throw error
+  }
+}
+
+export const IncreaseMeal = async ({
+  mealId,
+  mealProductId
+}: {
+  mealId: string
+  mealProductId: string
+}): Promise<ApiResponse<Meal>> => {
+  try {
+    const response: AxiosResponse<ApiResponse<Meal>> = await instance.put(`/api/Meal/increase`, {
+      mealId,
+      mealProductId
+    })
+    return response.data
+  } catch (error) {
+    console.error('Error fetching menus:', error)
+    throw error
+  }
+}
+
+export const DecreaseMeal = async ({
+  mealId,
+  mealProductId
+}: {
+  mealId: string
+  mealProductId: string
+}): Promise<ApiResponse<Meal>> => {
+  try {
+    const response: AxiosResponse<ApiResponse<Meal>> = await instance.put(`/api/Meal/reduce`, {
+      mealId,
+      mealProductId
+    })
+    return response.data
+  } catch (error) {
+    console.error('Error fetching menus:', error)
+    throw error
+  }
+}
+
+export const DeleteItemMeal = async ({
+  mealId,
+  mealProductId
+}: {
+  mealId: string
+  mealProductId: string
+}): Promise<ApiResponse<Meal>> => {
+  try {
+    const response: AxiosResponse<ApiResponse<Meal>> = await instance.delete(`/api/Meal/remove-item`, {
+      data: {
+        mealId,
+        mealProductId
+      }
     })
     return response.data
   } catch (error) {
