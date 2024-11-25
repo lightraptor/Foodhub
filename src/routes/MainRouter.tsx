@@ -3,6 +3,7 @@ import { ROUTES } from '@/defines'
 import { useRouteRender } from '@/hooks'
 import { HomePage, LoginPage } from '@/page'
 import CartPage from '@/page/cart/CartPage'
+import OrderPage from '@/page/order/OrderPage'
 import { RegisterPage } from '@/page/register'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 
@@ -37,6 +38,14 @@ export const MainRouter = () => {
       element: useRouteRender(
         <Layout>
           <RegisterPage />
+        </Layout>
+      )
+    },
+    {
+      path: ROUTES.Order.path,
+      element: useRouteRender(
+        <Layout>
+          <OrderPage />
         </Layout>
       )
     }

@@ -1,2 +1,2 @@
-export * from './CartPage'
+export * from './OrderPage'
 export * from './components'

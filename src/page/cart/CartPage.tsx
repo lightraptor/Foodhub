@@ -3,6 +3,8 @@ import { CartTable, columns } from './components'
 import { getMeal } from '@/apis/mealApi'
 import { MealList } from '@/types'
 import { formatToVND } from '@/constants'
+import { Link } from 'react-router-dom'
+import { ROUTES } from '@/defines'
 
 type Payment = {
   id: string
@@ -82,9 +84,11 @@ const CartPage = () => {
                 <h1 className='text-xl font-bold my-2 text-right'>Total: {formatToVND(total)}</h1>
               </div>
               <div className='p-4'>
-                <button className='bg-[#0765ff] text-[#fff] w-full p-3 rounded hover:bg-[#0765ff]/90'>
-                  Thanh toán
-                </button>
+                <Link to={ROUTES.Order.path}>
+                  <button className='bg-[#0765ff] text-[#fff] w-full p-3 rounded hover:bg-[#0765ff]/90'>
+                    Thanh toán
+                  </button>
+                </Link>
               </div>
             </div>
           </div>

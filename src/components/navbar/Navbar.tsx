@@ -2,7 +2,6 @@ import { AUTHENTICATION_ROUTES, ROUTES, STORAGE, UN_AUTHENTICATION_ROUTES } from
 import { useAuth } from '@/hooks'
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import checkout from '@/assets/checkout.png'
 
 export const Navbar: React.FC = () => {
   const username = localStorage.getItem('user')
@@ -37,17 +36,14 @@ export const Navbar: React.FC = () => {
           {/* Menu for larger screens */}
           <div className='hidden md:flex space-x-6'>
             {Object.values(access_token ? AUTHENTICATION_ROUTES : UN_AUTHENTICATION_ROUTES).map(
-              ({ path, label }: any) => (
-                <button key={path} onClick={() => handleNavigation(path)} className='hover:text-base duration-300'>
-                  {label === 'Order' ? (
-                    <div className='flex flex-row gap-2'>
-                      <img src={checkout} alt='' width={20} height={20} /> Order
-                    </div>
-                  ) : (
-                    label
-                  )}
-                </button>
-              )
+              ({ path, label }: any) =>
+                label === 'Order' ? (
+                  <></>
+                ) : (
+                  <button key={path} onClick={() => handleNavigation(path)} className='hover:text-base duration-300'>
+                    {label}
+                  </button>
+                )
             )}
             {access_token && (
               <>
