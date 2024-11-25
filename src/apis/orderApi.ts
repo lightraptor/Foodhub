@@ -5,9 +5,19 @@ const instance = axios.create({
   baseURL: baseURL,
   headers: {
     'Content-Type': 'application/json',
-    Authorization: `${localStorage.getItem('accessToken')}`
+    Authorization: `Bearer ${localStorage.getItem('accessToken')}`
   }
 })
+
+interface orderPost {
+  mealId: string
+  tableId: null
+  orderType: number
+  customerName: string
+  customerPhone: string
+  shippingAddress: string
+  discountAmount: number
+}
 
 interface ApiResponse<T> {
   data: T
@@ -45,18 +55,26 @@ export interface OrderDetail {
   totalPrice: number
 }
 
-export const postMeal = async ({
-  productId,
-  quantity
-}: {
-  productId: string
-  quantity: number
-}): Promise<ApiResponse<Meal>> => {
+export const postOrder = async ({
+  mealId,
+  tableId,
+  orderType,
+  customerName,
+  customerPhone,
+  shippingAddress,
+  discountAmount
+}: orderPost): Promise<ApiResponse<OrderResponse>> => {
+  const paypoad = {
+    mealId,
+    tableId,
+    orderType,
+    customerName,
+    customerPhone,
+    shippingAddress,
+    discountAmount
+  }
   try {
-    const response: AxiosResponse<ApiResponse<Meal>> = await instance.post(`/api/Meal`, {
-      productId,
-      quantity
-    })
+    const response: AxiosResponse<ApiResponse<OrderResponse>> = await instance.post(`/api/order`, paypoad)
     return response.data
   } catch (error) {
     console.error('Error fetching menus:', error)

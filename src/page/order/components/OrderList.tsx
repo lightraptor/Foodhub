@@ -27,8 +27,8 @@ const OrderList = () => {
       <div className='container mx-auto'>
         <h1 className='text-3xl font-bold my-8'>Order List</h1>
         <div className='w-full flex flex-col bg[#e5e5e5] gap-3'>
-          {data.map((item) => (
-            <div className='flex flex-row justify-between items-center'>
+          {data.map((item, index) => (
+            <div key={index} className='flex flex-row justify-between items-center'>
               <div className='flex flex-row gap-3'>
                 <img
                   src={item.productDetail.thumbnail}

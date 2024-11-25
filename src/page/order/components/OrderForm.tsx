@@ -5,6 +5,9 @@ import { useForm } from 'react-hook-form'
 import { Button } from '@/components/ui/button'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
+import { postOrder } from '@/apis/orderApi'
+import { toast } from 'react-toastify'
+import { useNavigate } from 'react-router-dom'
 
 // Define the schema
 const formSchema = z.object({
@@ -19,6 +22,7 @@ const formSchema = z.object({
 
 const OrderForm = () => {
   //   const mealId = localStorage.getItem('cartId') || ''
+  const navigate = useNavigate()
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -28,8 +32,32 @@ const OrderForm = () => {
     }
   })
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values)
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    const cartId = localStorage.getItem('cartId')
+    if (!cartId) {
+      return
+    }
+    const payload = {
+      mealId: cartId,
+      tableId: null,
+      orderType: 0,
+      customerName: values.name,
+      customerPhone: values.phone,
+      shippingAddress: values.address,
+      discountAmount: 0
+    }
+    try {
+      const response = await postOrder(payload)
+      const data = await response.data
+      console.log(data)
+      localStorage.removeItem('cartId')
+      toast.success('Order successfully', {
+        autoClose: 1000
+      })
+      navigate('/')
+    } catch (error) {
+      console.error('Error fetching data:', error)
+    }
   }
 
   return (

@@ -15,7 +15,7 @@ export const useAuth = () => {
     // call api to set
     try {
       const res = await AuthenApis.doLoginRequest(params)
-      const token = `Bearer ${res?.data?.accessToken}`
+      const token = `${res?.data?.accessToken}`
       localStorage.setItem(STORAGE.ACCESS_TOKEN, token)
       api.setToken(res?.data?.accessToken)
       dispatch(userActions.setAccessToken(res?.data?.accessToken))
