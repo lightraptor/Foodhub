@@ -3,6 +3,7 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 import { FormRegister } from '@/types'
 import { useAuth } from '@/hooks'
+import { Link } from 'react-router-dom'
 
 const signupSchema = yup.object().shape({
   email: yup.string().email('Invalid email').required('Email is required'),
@@ -31,7 +32,13 @@ export const RegisterPage: React.FC = () => {
   return (
     <div className='min-h-screen flex items-center justify-center bg-gray-100 p-4'>
       <div className='max-w-md w-full bg-white shadow-md rounded-lg p-8'>
-        <h1 className='text-2xl font-bold text-center mb-6 text-gray-800'>Create an Account</h1>
+        <h1 className='text-2xl font-bold mb-2 text-gray-800'>Register</h1>
+        <p className='mb-3'>
+          Already have an account?{' '}
+          <Link to='/login' className='text-[#0765ff]'>
+            Login
+          </Link>
+        </p>
         <form onSubmit={handleSubmit(onSubmit)} className='space-y-4'>
           {/* Email Field */}
           <div>
@@ -87,9 +94,9 @@ export const RegisterPage: React.FC = () => {
           {/* Submit Button */}
           <button
             type='submit'
-            className='w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2'
+            className='w-full bg-[#007BFF] text-[#fff] py-2 px-4 rounded hover:bg-[#0069d9] focus:outline-none focus:ring-2 focus:ring-blue-400'
           >
-            Sign Up
+            Submit
           </button>
         </form>
       </div>

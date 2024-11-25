@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button'
 import { Product } from '@/types'
 import { postMeal } from '@/apis/mealApi'
 import { toast } from 'react-toastify'
+import { formatToVND } from '@/constants'
 
 interface ProductCardProps {
   product: Product
@@ -39,7 +40,7 @@ export function ProductCard({ product }: ProductCardProps) {
   }
 
   return (
-    <div className='bg-white rounded-lg shadow-md overflow-hidden transition-transform duration-300 hover:scale-105 cursor-pointer'>
+    <div className='bg-white rounded-lg shadow-md overflow-hidden cursor-pointer'>
       <div className='relative h-48 w-full'>
         <img src={product.thumbnail || bgImage} alt={product.name} className='w-full h-full object-cover' />
       </div>
@@ -47,7 +48,7 @@ export function ProductCard({ product }: ProductCardProps) {
         <h3 className='text-lg font-semibold mb-2'>{product.name}</h3>
         <p className='text-gray-600 text-sm mb-4 line-clamp-2'>{product.description}</p>
         <div className='flex justify-between items-center mb-2'>
-          <span className='text-xl font-bold text-blue-600'>${product.sellingPrice.toFixed(2)}</span>
+          <span className='text-xl font-bold text-blue-600'>{formatToVND(product.sellingPrice)}</span>
           <div className='flex items-center space-x-2'>
             <Button variant='outline' size='icon' onClick={decrementQuantity}>
               <Minus className='h-4 w-4' />
@@ -58,7 +59,7 @@ export function ProductCard({ product }: ProductCardProps) {
             </Button>
           </div>
         </div>
-        <Button className='w-full' variant={'outline'} onClick={addToCart}>
+        <Button className='w-full bg-[#0765ff] hover:bg-[#0765d1] text-[#fff]' onClick={addToCart}>
           Add to Cart
         </Button>
       </div>

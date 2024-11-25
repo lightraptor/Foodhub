@@ -7,3 +7,5 @@ export function formatToVND(amount: number): string {
 
   return amount.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' }).replace('₫', ' VND') // Thay thế ký hiệu ₫ bằng VND nếu cần
 }
+
+export const MerchantId = 'a74366c8-63e7-49ab-d47a-08dd0d4e1659'

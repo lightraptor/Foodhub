@@ -1,4 +1,4 @@
-import { getMeal } from '@/apis/mealApi'
+import { getMealCustomer } from '@/apis/mealApi'
 import { formatToVND } from '@/constants'
 import { MealList } from '@/types'
 import React, { useEffect } from 'react'
@@ -6,11 +6,10 @@ import React, { useEffect } from 'react'
 const OrderList = () => {
   const [data, setData] = React.useState<MealList[]>([])
   const [total, setTotal] = React.useState(0)
-  const MealId = localStorage.getItem('cartId') || ''
 
   const fetchMeals = async () => {
     try {
-      const response = await getMeal(MealId)
+      const response = await getMealCustomer()
       const mealResponse = await response.data
       setTotal(mealResponse?.totalPrice)
       setData(mealResponse?.products)

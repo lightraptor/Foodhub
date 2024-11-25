@@ -3,6 +3,7 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 import { FormLogin } from '@/types'
 import { useAuth } from '@/hooks'
+import { Link } from 'react-router-dom'
 
 const schema = yup
   .object({
@@ -28,8 +29,13 @@ export const LoginPage = () => {
   return (
     <div className='flex items-center justify-center min-h-screen bg-gray-100'>
       <form onSubmit={handleSubmit(onSubmit)} className='bg-white p-6 rounded shadow-md w-full max-w-sm'>
-        <h1 className='text-xl font-bold mb-4'>Login</h1>
-
+        <h1 className='text-xl font-bold mb-2'>Login</h1>
+        <p className='mb-2 text-sm'>
+          Don't have an account?{' '}
+          <Link to='/register'>
+            <span className='text-[#007BFF]'> Sign up</span>
+          </Link>
+        </p>
         {/* Email Field */}
         <div className='mb-4'>
           <label htmlFor='email' className='block text-sm font-medium mb-2'>
@@ -65,7 +71,7 @@ export const LoginPage = () => {
         {/* Submit Button */}
         <button
           type='submit'
-          className='w-full bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400'
+          className='w-full bg-[#007BFF] text-[#fff] py-2 px-4 rounded hover:bg-[#0069d9] focus:outline-none focus:ring-2 focus:ring-blue-400'
         >
           Submit
         </button>

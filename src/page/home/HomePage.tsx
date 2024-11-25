@@ -21,7 +21,6 @@ export const HomePage = () => {
   }, [])
   return (
     <>
-      <p>Home page</p>
       <div className='container mx-auto'>
         <h1 className='text-3xl font-bold text-center my-8'>Our Products</h1>
         <ProductList products={products} />

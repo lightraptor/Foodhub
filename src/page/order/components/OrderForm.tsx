@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
@@ -7,7 +7,10 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { Input } from '@/components/ui/input'
 import { postOrder } from '@/apis/orderApi'
 import { toast } from 'react-toastify'
-import { useNavigate } from 'react-router-dom'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import { fetchPaymentDestination, paymentItem } from '@/apis/paymentDestination'
+import { MerchantId } from '@/constants'
+import { fetchPayment } from '@/apis/paymentApi'
 
 // Define the schema
 const formSchema = z.object({
@@ -21,8 +24,8 @@ const formSchema = z.object({
 })
 
 const OrderForm = () => {
-  //   const mealId = localStorage.getItem('cartId') || ''
-  const navigate = useNavigate()
+  const [listMethod, setListMethod] = React.useState<paymentItem[]>([])
+  const [payMentMethod, setPayMentMethod] = React.useState<string>('')
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -31,6 +34,25 @@ const OrderForm = () => {
       address: ''
     }
   })
+
+  useEffect(() => {
+    console.log('payMentMethod', payMentMethod)
+  }, [payMentMethod])
+
+  const fetchListMethod = async () => {
+    try {
+      const response = await fetchPaymentDestination()
+      const data = await response.data
+      if (!data) return
+      setListMethod(data?.items)
+    } catch (error) {
+      console.error('Error fetching data:', error)
+    }
+  }
+
+  useEffect(() => {
+    fetchListMethod()
+  }, [])
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     const cartId = localStorage.getItem('cartId')
@@ -54,7 +76,21 @@ const OrderForm = () => {
       toast.success('Order successfully', {
         autoClose: 1000
       })
-      navigate('/')
+      const paymentPayload = {
+        paymentContent: 'string',
+        paymentCurrency: 'VND',
+        requiredAmount: data.totalAmount,
+        paymentLanguage: 'VN',
+        orderId: data.id,
+        merchantId: MerchantId,
+        paymentDestinationId: payMentMethod,
+        paymentDesname: listMethod.find((item) => item.id === payMentMethod)?.desName || ''
+      }
+      console.log(paymentPayload)
+      const paymentResponse = await fetchPayment(paymentPayload)
+      const paymentData = await paymentResponse.data
+      console.log(paymentData)
+      window.location.href = paymentData.paymentUrl
     } catch (error) {
       console.error('Error fetching data:', error)
     }
@@ -107,7 +143,18 @@ const OrderForm = () => {
             </FormItem>
           )}
         />
-
+        <Select onValueChange={(value) => setPayMentMethod(value)}>
+          <SelectTrigger className='w-[260px]'>
+            <SelectValue placeholder='Chọn hình thức thanh toán' />
+          </SelectTrigger>
+          <SelectContent className='bg-[#fff]'>
+            {listMethod.map((item: paymentItem) => (
+              <SelectItem key={item.id} value={item.id}>
+                {item.desShortName}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
         {/* Submit Button */}
         <Button type='submit' className='bg-[#0765ff] text-[#fff] w-full'>
           Submit

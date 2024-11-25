@@ -40,6 +40,11 @@ export interface Product {
   thumbnail: string
 }
 
+export const getMealCustomer = async (): Promise<ApiResponse<MealProps>> => {
+  const response: AxiosResponse<ApiResponse<MealProps>> = await instance.get(`/api/Meal/customer`)
+  return response.data
+}
+
 export const getMeal = async (id: string): Promise<ApiResponse<MealProps>> => {
   const response: AxiosResponse<ApiResponse<MealProps>> = await instance.get(`/api/Meal?id=${id}`)
   return response.data
