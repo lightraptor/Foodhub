@@ -2,6 +2,7 @@ import { AUTHENTICATION_ROUTES, ROUTES, STORAGE, UN_AUTHENTICATION_ROUTES } from
 import { useAuth } from '@/hooks'
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { Button } from '../ui/button'
 
 export const Navbar: React.FC = () => {
   const username = localStorage.getItem('user')
@@ -47,14 +48,17 @@ export const Navbar: React.FC = () => {
             )}
             {access_token && (
               <>
-                <button
-                  className='px-3 py-2 rounded-md text-base font-medium text-white hover:bg-gray-700'
-                  onClick={logout}
-                >
-                  Logout
-                </button>
-                <button>{username}</button>
+                <Button>{username}</Button>
               </>
+              // <>
+              //   <button
+              //     className='px-3 py-2 rounded-md text-base font-medium text-white hover:bg-gray-700'
+              //     onClick={logout}
+              //   >
+              //     Logout
+              //   </button>
+              //   <button>{username}</button>
+              // </>
             )}
           </div>
 

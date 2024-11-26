@@ -9,8 +9,8 @@ import { postOrder } from '@/apis/orderApi'
 import { toast } from 'react-toastify'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { fetchPaymentDestination, paymentItem } from '@/apis/paymentDestination'
-import { MerchantId } from '@/constants'
 import { fetchPayment } from '@/apis/paymentApi'
+import { fetchMerchantPaging } from '@/apis/merchantApi'
 
 // Define the schema
 const formSchema = z.object({
@@ -26,6 +26,7 @@ const formSchema = z.object({
 const OrderForm = () => {
   const [listMethod, setListMethod] = React.useState<paymentItem[]>([])
   const [payMentMethod, setPayMentMethod] = React.useState<string>('')
+  const [merchantId, setMerchantId] = React.useState<string>('')
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -50,8 +51,20 @@ const OrderForm = () => {
     }
   }
 
+  const fetchMerchantId = async () => {
+    try {
+      const response = await fetchMerchantPaging()
+      const data = await response.data
+      if (!data) return
+      setMerchantId(data?.items[0].id)
+    } catch (error) {
+      console.error('Error fetching data:', error)
+    }
+  }
+
   useEffect(() => {
     fetchListMethod()
+    fetchMerchantId()
   }, [])
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
@@ -62,7 +75,7 @@ const OrderForm = () => {
     const payload = {
       mealId: cartId,
       tableId: null,
-      orderType: 0,
+      orderType: 2,
       customerName: values.name,
       customerPhone: values.phone,
       shippingAddress: values.address,
@@ -82,7 +95,7 @@ const OrderForm = () => {
         requiredAmount: data.totalAmount,
         paymentLanguage: 'VN',
         orderId: data.id,
-        merchantId: MerchantId,
+        merchantId: merchantId,
         paymentDestinationId: payMentMethod,
         paymentDesname: listMethod.find((item) => item.id === payMentMethod)?.desName || ''
       }
