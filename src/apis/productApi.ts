@@ -51,9 +51,36 @@ export interface CategoryDto {
   description: string
 }
 
+export interface ProductFilter {
+  searchText?: string
+  priceFrom?: number
+  priceTo?: number
+  categoryId?: string
+  menuId?: string
+  Inactive?: boolean
+  PageNumber?: number
+  PageSize?: number
+}
+
 export const fetchProduct = async (): Promise<ApiResponse<ProductResponse>> => {
   try {
     const response: AxiosResponse<ApiResponse<ProductResponse>> = await instance.get(`/api/Product/get-list`)
+    return response.data
+  } catch (error) {
+    console.error('Error fetching menus:', error)
+    throw error
+  }
+}
+
+export const fetchFilterProduct = async (productFilter: ProductFilter): Promise<ApiResponse<ProductResponse>> => {
+  const filteredParams = Object.fromEntries(
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    Object.entries(productFilter).filter(([key, value]) => value !== undefined && value !== null && value !== '')
+  )
+  try {
+    const response: AxiosResponse<ApiResponse<ProductResponse>> = await instance.get(`/api/Product/filter`, {
+      params: filteredParams
+    })
     return response.data
   } catch (error) {
     console.error('Error fetching menus:', error)
