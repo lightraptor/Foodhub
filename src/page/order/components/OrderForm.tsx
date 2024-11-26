@@ -20,7 +20,11 @@ const formSchema = z.object({
     .min(10, 'Phone must have at least 10 digits')
     .max(15, 'Phone must be under 15 digits')
     .regex(/^\d+$/, 'Phone must contain only numbers'),
-  address: z.string().min(5, 'Address must have at least 5 characters').max(100, 'Address must be under 100 characters')
+  address: z
+    .string()
+    .min(5, 'Address must have at least 5 characters')
+    .max(100, 'Address must be under 100 characters'),
+  contentPayment: z.string()
 })
 
 const OrderForm = () => {
@@ -32,7 +36,8 @@ const OrderForm = () => {
     defaultValues: {
       name: '',
       phone: '',
-      address: ''
+      address: '',
+      contentPayment: ''
     }
   })
 
@@ -90,7 +95,7 @@ const OrderForm = () => {
         autoClose: 1000
       })
       const paymentPayload = {
-        paymentContent: 'string',
+        paymentContent: values.contentPayment,
         paymentCurrency: 'VND',
         requiredAmount: data.totalAmount,
         paymentLanguage: 'VN',
@@ -151,6 +156,20 @@ const OrderForm = () => {
               <FormLabel>Address</FormLabel>
               <FormControl>
                 <Input placeholder='Enter your address' {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name='contentPayment'
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Content Payment</FormLabel>
+              <FormControl>
+                <Input placeholder='Enter your content payment' {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
