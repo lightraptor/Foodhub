@@ -1,7 +1,7 @@
 import { Layout } from '@/components'
 import { ROUTES } from '@/defines'
 import { useRouteRender } from '@/hooks'
-import { HomePage, LoginPage } from '@/page'
+import { HomePage, LoginPage, PaymentPage } from '@/page'
 import CartPage from '@/page/cart/CartPage'
 import OrderPage from '@/page/order/OrderPage'
 import { RegisterPage } from '@/page/register'
@@ -46,6 +46,14 @@ export const MainRouter = () => {
       element: useRouteRender(
         <Layout>
           <OrderPage />
+        </Layout>
+      )
+    },
+    {
+      path: ROUTES.PaymentConfirm.path,
+      element: useRouteRender(
+        <Layout>
+          <PaymentPage />
         </Layout>
       )
     }

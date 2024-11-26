@@ -1,7 +1,11 @@
 export const AUTHENTICATION_ROUTES = {
   Home: { path: '/', label: 'Home' },
   Cart: { path: '/cart', label: 'Cart' },
-  Order: { path: '/order', label: 'Order' }
+  Order: { path: '/order', label: 'Order' },
+  PaymentConfirm: {
+    path: '/payment/confirm',
+    label: 'PaymentConfirm'
+  }
 }
 
 export const UN_AUTHENTICATION_ROUTES = {

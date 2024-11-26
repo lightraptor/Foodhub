@@ -1,8 +1,25 @@
-import { AUTHENTICATION_ROUTES, ROUTES, STORAGE, UN_AUTHENTICATION_ROUTES } from '@/defines'
+import {
+  AUTHENTICATION_MENUS,
+  AUTHENTICATION_ROUTES,
+  ROUTES,
+  STORAGE,
+  UN_AUTHENTICATION_MENUS,
+  UN_AUTHENTICATION_ROUTES
+} from '@/defines'
 import { useAuth } from '@/hooks'
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Button } from '../ui/button'
+import userAvt from '@/assets/user.png'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger
+} from '../ui/dropdown-menu'
+import { LogOutIcon } from 'lucide-react'
 
 export const Navbar: React.FC = () => {
   const username = localStorage.getItem('user')
@@ -36,29 +53,46 @@ export const Navbar: React.FC = () => {
           </div>
           {/* Menu for larger screens */}
           <div className='hidden md:flex space-x-6'>
-            {Object.values(access_token ? AUTHENTICATION_ROUTES : UN_AUTHENTICATION_ROUTES).map(
-              ({ path, label }: any) =>
-                label === 'Order' ? (
-                  <></>
-                ) : (
-                  <button key={path} onClick={() => handleNavigation(path)} className='hover:text-base duration-300'>
-                    {label}
-                  </button>
-                )
+            {Object.values(access_token ? AUTHENTICATION_MENUS : UN_AUTHENTICATION_MENUS).map(({ path, label }: any) =>
+              label === 'Order' ? (
+                <></>
+              ) : (
+                <button key={path} onClick={() => handleNavigation(path)} className='hover:text-base duration-300'>
+                  {label}
+                </button>
+              )
             )}
             {access_token && (
               <>
-                <Button>{username}</Button>
+                <DropdownMenu>
+                  <DropdownMenuTrigger>
+                    <Button className='bg-[#fff]'>
+                      <img src={userAvt} alt='user' className='w-4 h-4' /> {username}
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent>
+                    <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem>Profile</DropdownMenuItem>
+                    <DropdownMenuItem>
+                      <button
+                        className=' rounded-md text-white hover:bg-gray-700 flex gap-2 items-center'
+                        onClick={logout}
+                      >
+                        <LogOutIcon className='w-4 h-4 text-[#464646]' />
+                        Logout
+                      </button>
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+                {/* <button
+                  className='px-3 py-2 rounded-md text-base font-medium text-white hover:bg-gray-700'
+                  onClick={logout}
+                >
+                  Logout
+                </button>
+                <button>{username}</button> */}
               </>
-              // <>
-              //   <button
-              //     className='px-3 py-2 rounded-md text-base font-medium text-white hover:bg-gray-700'
-              //     onClick={logout}
-              //   >
-              //     Logout
-              //   </button>
-              //   <button>{username}</button>
-              // </>
             )}
           </div>
 
@@ -91,7 +125,7 @@ export const Navbar: React.FC = () => {
       {isMenuOpen && (
         <div className='md:hidden'>
           <div className='space-y-1 px-2 pt-2 pb-3'>
-            {Object.values(access_token ? AUTHENTICATION_ROUTES : UN_AUTHENTICATION_ROUTES).map(
+            {Object.values(access_token ? AUTHENTICATION_MENUS : UN_AUTHENTICATION_MENUS).map(
               ({ path, label }: any) => (
                 <button
                   key={path}
