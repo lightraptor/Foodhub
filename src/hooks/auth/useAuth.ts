@@ -20,7 +20,7 @@ export const useAuth = () => {
       api.setToken(res?.data?.accessToken)
       dispatch(userActions.setAccessToken(res?.data?.accessToken))
       const decoded: any = jwtDecode(res?.data?.accessToken)
-      localStorage.setItem('user', decoded?.email)
+      localStorage.setItem('user', decoded?.sub)
       localStorage.setItem('role', decoded?.role)
 
       localStorage.setItem(STORAGE.REFRESH_TOKEN, res?.data?.refreshToken)

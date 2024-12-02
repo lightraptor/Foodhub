@@ -44,9 +44,9 @@ export function ProductCard({ product }: ProductCardProps) {
       <div className='relative h-48 w-full'>
         <img src={product.thumbnail || bgImage} alt={product.name} className='w-full h-full object-cover' />
       </div>
-      <div className='p-4'>
+      <div className='p-4 flex flex-col h-[200px] justify-between'>
         <h3 className='text-lg font-semibold mb-2'>{product.name}</h3>
-        <p className='text-gray-600 text-sm mb-4 line-clamp-2'>{product.description}</p>
+        <p className='text-gray-600 text-sm line-clamp-2'>{product.description}</p>
         <div className='flex justify-between items-center mb-2'>
           <span className='text-xl font-bold text-blue-600'>{formatToVND(product.sellingPrice)}</span>
           <div className='flex items-center space-x-2'>

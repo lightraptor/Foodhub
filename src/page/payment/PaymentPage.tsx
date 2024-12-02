@@ -24,7 +24,7 @@ export const PaymentPage = () => {
         )}
         <p className='text-3xl mt-3 font-bold'>
           {amount
-            ? new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(Number(amount) / 100)
+            ? new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(Number(amount))
             : 'Not available'}
         </p>
         <div className='flex flex-row justify-between items-center w-1/2 mt-3 gap-3'>
