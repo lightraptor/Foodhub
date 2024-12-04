@@ -4,9 +4,6 @@ import { Input } from '@/components/ui/input'
 import { postOrder } from '@/apis/orderApi'
 import { toast } from 'react-toastify'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { fetchPaymentDestination, paymentItem } from '@/apis/paymentDestination'
-import { fetchPayment } from '@/apis/paymentApi'
-import { fetchMerchantPaging } from '@/apis/merchantApi'
 import { fetchGetTable } from '@/apis/tableApi'
 import { TableItem } from '@/types'
 
@@ -33,25 +30,10 @@ export const OrderFormDineIn = ({ orderType }: { orderType: number }) => {
   const [errors, setErrors] = useState<Errors>({})
   const [listTable, setListTable] = useState<TableItem[]>([])
   const [selectedTable, setSelectedTable] = useState<string>('')
-  const [listMethod, setListMethod] = useState<paymentItem[]>([])
-  const [payMentMethod, setPayMentMethod] = useState<string>('')
-  const [merchantId, setMerchantId] = useState<string>('')
 
   useEffect(() => {
-    fetchListMethod()
-    fetchMerchantId()
     fetchTableList()
   }, [])
-
-  const fetchListMethod = async () => {
-    try {
-      const response = await fetchPaymentDestination()
-      const data = await response.data
-      if (data) setListMethod(data?.items)
-    } catch (error) {
-      console.error('Error fetching payment methods:', error)
-    }
-  }
 
   const fetchTableList = async () => {
     try {
@@ -60,16 +42,6 @@ export const OrderFormDineIn = ({ orderType }: { orderType: number }) => {
       if (data) setListTable(data?.items)
     } catch (error) {
       console.error('Error fetching tables:', error)
-    }
-  }
-
-  const fetchMerchantId = async () => {
-    try {
-      const response = await fetchMerchantPaging()
-      const data = await response.data
-      if (data) setMerchantId(data?.items[0].id)
-    } catch (error) {
-      console.error('Error fetching merchant ID:', error)
     }
   }
 
@@ -117,24 +89,11 @@ export const OrderFormDineIn = ({ orderType }: { orderType: number }) => {
 
     try {
       const response = await postOrder(payload)
-      const data = await response.data
-      localStorage.removeItem('cartId')
-      toast.success('Order successfully', { autoClose: 1000 })
-
-      const paymentPayload = {
-        paymentContent: formData.contentPayment || 'khong co noi dung',
-        paymentCurrency: 'VND',
-        requiredAmount: data.totalAmount,
-        paymentLanguage: 'VN',
-        orderId: data.id,
-        merchantId,
-        paymentDestinationId: payMentMethod,
-        paymentDesname: listMethod.find((item) => item.id === payMentMethod)?.desName || ''
+      if (!response.success) {
+        console.error(response.message)
+        return
       }
-
-      const paymentResponse = await fetchPayment(paymentPayload)
-      const paymentData = await paymentResponse.data
-      window.location.href = paymentData.paymentUrl
+      toast.success('Order successfully', { autoClose: 1000 })
     } catch (error) {
       console.error('Error submitting order:', error)
     }
@@ -181,33 +140,6 @@ export const OrderFormDineIn = ({ orderType }: { orderType: number }) => {
           </SelectContent>
         </Select>
       )}
-
-      <Select onValueChange={setPayMentMethod}>
-        <SelectTrigger className='w-[260px]'>
-          <SelectValue placeholder='Chọn hình thức thanh toán' />
-        </SelectTrigger>
-        <SelectContent className='bg-[#fff]'>
-          {listMethod.map((item) => (
-            <SelectItem key={item.id} value={item.id}>
-              {item.desShortName}
-            </SelectItem>
-          ))}
-          {orderType === 1 && <SelectItem value='thanh toán tại quầy'>thanh toán tại quầy</SelectItem>}
-        </SelectContent>
-      </Select>
-
-      {payMentMethod !== 'thanh toán tại quầy' && (
-        <div>
-          <label>Content Payment</label>
-          <Input
-            name='contentPayment'
-            placeholder='Enter your content payment'
-            value={formData.contentPayment}
-            onChange={handleInputChange}
-          />
-        </div>
-      )}
-
       <Button type='submit' className='bg-[#0765ff] text-[#fff] w-full'>
         Submit
       </Button>
