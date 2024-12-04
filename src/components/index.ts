@@ -1,3 +1,6 @@
 export * from './theme-control'
 export * from './navbar'
 export * from './layout'
+export * from './listProduct'
+export * from './ui'
+export * from './pagination'

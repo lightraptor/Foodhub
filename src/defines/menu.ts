@@ -1,7 +1,8 @@
 export const AUTHENTICATION_MENUS = {
   Home: { path: '/', label: 'Home' },
   Cart: { path: '/cart', label: 'Cart' },
-  Order: { path: '/order', label: 'Order' }
+  Order: { path: '/order', label: 'Order' },
+  Booking: { path: '/booking', label: 'Booking' }
 }
 
 export const UN_AUTHENTICATION_MENUS = {

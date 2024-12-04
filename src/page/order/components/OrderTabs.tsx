@@ -1,10 +1,11 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import OrderForm from './OrderForm'
+import { OrderFormDineIn } from './OrderFormDineIn'
 
 const OrderTabs = () => {
   return (
     <>
-      <Tabs defaultValue='account' className='w-3/4 my-10 flex flex-col items-center'>
+      <Tabs defaultValue='account' className='md:w-3/4 w-fullmd:mx-none mx-3 my-10 flex flex-col items-center'>
         <TabsList className='bg-[#e5e5e5] flex gap-2'>
           <TabsTrigger
             value='account'
@@ -20,10 +21,10 @@ const OrderTabs = () => {
           </TabsTrigger>
         </TabsList>
         <TabsContent value='account' className='w-full'>
-          <OrderForm />
+          <OrderForm orderType={2} />
         </TabsContent>
         <TabsContent className='w-full' value='password'>
-          Tính năng đang trong giai đoạn phát triển
+          <OrderFormDineIn orderType={1} />
         </TabsContent>
       </Tabs>
     </>

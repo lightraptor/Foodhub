@@ -11,7 +11,7 @@ const instance = axios.create({
 
 interface orderPost {
   mealId: string
-  tableId: null
+  tableId: null | string
   orderType: number
   customerName: string
   customerPhone: string

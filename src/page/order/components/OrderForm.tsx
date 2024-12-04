@@ -27,7 +27,7 @@ const formSchema = z.object({
   contentPayment: z.string()
 })
 
-const OrderForm = () => {
+const OrderForm = ({ orderType }: { orderType: number }) => {
   const [listMethod, setListMethod] = React.useState<paymentItem[]>([])
   const [payMentMethod, setPayMentMethod] = React.useState<string>('')
   const [merchantId, setMerchantId] = React.useState<string>('')
@@ -73,19 +73,22 @@ const OrderForm = () => {
   }, [])
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
+    console.log('Form Data:', values)
     const cartId = localStorage.getItem('cartId')
     if (!cartId) {
       return
     }
+
     const payload = {
       mealId: cartId,
       tableId: null,
-      orderType: 2,
+      orderType: orderType,
       customerName: values.name,
       customerPhone: values.phone,
-      shippingAddress: values.address,
+      shippingAddress: orderType === 1 ? 'tại quán' : values.address || '',
       discountAmount: 0
     }
+    console.log(payload)
     try {
       const response = await postOrder(payload)
       const data = await response.data
@@ -94,21 +97,23 @@ const OrderForm = () => {
       toast.success('Order successfully', {
         autoClose: 1000
       })
-      const paymentPayload = {
-        paymentContent: values.contentPayment,
-        paymentCurrency: 'VND',
-        requiredAmount: data.totalAmount,
-        paymentLanguage: 'VN',
-        orderId: data.id,
-        merchantId: merchantId,
-        paymentDestinationId: payMentMethod,
-        paymentDesname: listMethod.find((item) => item.id === payMentMethod)?.desName || ''
+      if (orderType === 2) {
+        const paymentPayload = {
+          paymentContent: values.contentPayment || 'khong co noi dung',
+          paymentCurrency: 'VND',
+          requiredAmount: data.totalAmount,
+          paymentLanguage: 'VN',
+          orderId: data.id,
+          merchantId: merchantId,
+          paymentDestinationId: payMentMethod,
+          paymentDesname: listMethod.find((item) => item.id === payMentMethod)?.desName || ''
+        }
+        console.log(paymentPayload)
+        const paymentResponse = await fetchPayment(paymentPayload)
+        const paymentData = await paymentResponse.data
+        console.log(paymentData)
+        window.location.href = paymentData.paymentUrl
       }
-      console.log(paymentPayload)
-      const paymentResponse = await fetchPayment(paymentPayload)
-      const paymentData = await paymentResponse.data
-      console.log(paymentData)
-      window.location.href = paymentData.paymentUrl
     } catch (error) {
       console.error('Error fetching data:', error)
     }
@@ -148,33 +153,21 @@ const OrderForm = () => {
         />
 
         {/* Address Field */}
-        <FormField
-          control={form.control}
-          name='address'
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Address</FormLabel>
-              <FormControl>
-                <Input placeholder='Enter your address' {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
-          name='contentPayment'
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Content Payment</FormLabel>
-              <FormControl>
-                <Input placeholder='Enter your content payment' {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+        {orderType == 2 && (
+          <FormField
+            control={form.control}
+            name='address'
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Address</FormLabel>
+                <FormControl>
+                  <Input placeholder='Enter your address' {...field} value={field.value || ''} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        )}
         <Select onValueChange={(value) => setPayMentMethod(value)}>
           <SelectTrigger className='w-[260px]'>
             <SelectValue placeholder='Chọn hình thức thanh toán' />
@@ -185,8 +178,24 @@ const OrderForm = () => {
                 {item.desShortName}
               </SelectItem>
             ))}
+            {orderType == 1 && <SelectItem value='thanh toán tại quầy'>thanh toán tại quầy</SelectItem>}
           </SelectContent>
         </Select>
+        {payMentMethod !== 'thanh toán tại quầy' && (
+          <FormField
+            control={form.control}
+            name='contentPayment'
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Content Payment</FormLabel>
+                <FormControl>
+                  <Input placeholder='Enter your content payment' {...field} value={field.value || ''} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        )}
         {/* Submit Button */}
         <Button type='submit' className='bg-[#0765ff] text-[#fff] w-full'>
           Submit

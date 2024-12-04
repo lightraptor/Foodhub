@@ -21,11 +21,11 @@ const OrderPage = () => {
         </button>
       </div>
       <h1 className='text-3xl font-bold text-center'>Checkout</h1>
-      <div className='flex flex-row gap-2'>
-        <div className='w-2/3'>
+      <div className='flex md:flex-row flex-col-reverse gap-2'>
+        <div className='md:w-2/3 w-full mx-auto'>
           <OrderTabs />
         </div>
-        <div className='w-1/3'>
+        <div className='md:w-1/3 w-full mx-auto'>
           <OrderList />
         </div>
       </div>

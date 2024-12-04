@@ -62,3 +62,31 @@ export type Category = {
   description: string
   inactive: boolean
 }
+
+export type TableItem = {
+  id: string
+  name: string
+  maxCapacity: number
+  status: string
+  isAvailable: boolean
+  areaName: string
+}
+
+export type BookingItem = {
+  id: string
+  peopleCount: number
+  status: string
+  notes: string
+  bookingDate: string
+  checkinTime: string
+  customerId: any
+  customerName: string
+  phone: string
+  tables: Table[]
+}
+
+export type Table = {
+  tableId: string
+  name: string
+  areaName: string
+}
