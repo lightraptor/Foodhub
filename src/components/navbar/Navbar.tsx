@@ -10,7 +10,6 @@ import { useAuth } from '@/hooks'
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Button } from '../ui/button'
-import userAvt from '@/assets/user.png'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -44,7 +43,7 @@ export const Navbar: React.FC = () => {
   }
 
   return (
-    <nav className='bg-baseBackground text-primary'>
+    <nav className='bg-baseBackground'>
       <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
         <div className='flex justify-between h-16 items-center'>
           {/* Logo */}
@@ -66,20 +65,15 @@ export const Navbar: React.FC = () => {
               <>
                 <DropdownMenu>
                   <DropdownMenuTrigger>
-                    <Button className='bg-[#fff]'>
-                      <img src={userAvt} alt='user' className='w-4 h-4' /> {username}
-                    </Button>
+                    <Button>{username}</Button>
                   </DropdownMenuTrigger>
-                  <DropdownMenuContent>
+                  <DropdownMenuContent className='bg-white'>
                     <DropdownMenuLabel>My Account</DropdownMenuLabel>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem>Profile</DropdownMenuItem>
                     <DropdownMenuItem>
-                      <button
-                        className=' rounded-md text-white hover:bg-gray-700 flex gap-2 items-center'
-                        onClick={logout}
-                      >
-                        <LogOutIcon className='w-4 h-4 text-[#464646]' />
+                      <button className=' rounded-md flex gap-2 items-center' onClick={logout}>
+                        <LogOutIcon className='w-4 h-4 text-black' />
                         Logout
                       </button>
                     </DropdownMenuItem>

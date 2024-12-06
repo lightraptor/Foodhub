@@ -1,7 +1,7 @@
 import { Layout } from '@/components'
 import { ROUTES } from '@/defines'
 import { useRouteRender } from '@/hooks'
-import { BookingPage, HomePage, LoginPage, PaymentPage } from '@/page'
+import { BookingPage, LoginPage, PaymentPage, ProductPage } from '@/page'
 import CartPage from '@/page/cart/CartPage'
 import OrderPage from '@/page/order/OrderPage'
 import { RegisterPage } from '@/page/register'
@@ -13,7 +13,7 @@ export const MainRouter = () => {
       path: ROUTES.Home.path,
       element: useRouteRender(
         <Layout>
-          <HomePage />
+          <BookingPage />
         </Layout>
       )
     },
@@ -54,6 +54,14 @@ export const MainRouter = () => {
       element: useRouteRender(
         <Layout>
           <BookingPage />
+        </Layout>
+      )
+    },
+    {
+      path: ROUTES.Product.path,
+      element: useRouteRender(
+        <Layout>
+          <ProductPage />
         </Layout>
       )
     },

@@ -7,6 +7,7 @@ interface PaginationProps {
   totalItems?: number
   onPageChange: (page: number) => void
   onPageSizeChange: (size: number) => void
+  disableDisplayTotal?: boolean
 }
 
 export const Pagination: React.FC<PaginationProps> = ({
@@ -14,7 +15,8 @@ export const Pagination: React.FC<PaginationProps> = ({
   pageSize,
   totalItems = 0,
   onPageChange,
-  onPageSizeChange
+  onPageSizeChange,
+  disableDisplayTotal
 }) => {
   const totalPages = Math.max(Math.ceil(totalItems / pageSize), 1) // Tổng số trang
   const pageSizes = [5, 10, 20, 50]
@@ -47,11 +49,13 @@ export const Pagination: React.FC<PaginationProps> = ({
       </div>
 
       {/* Total Items Display */}
-      <div className='text-sm text-gray-600'>
-        <span>
-          Total records: <strong>{totalItems}</strong>
-        </span>
-      </div>
+      {!disableDisplayTotal && (
+        <div className='text-sm text-gray-600'>
+          <span>
+            Total records: <strong>{totalItems}</strong>
+          </span>
+        </div>
+      )}
 
       {/* Pagination Controls */}
       <div className='flex items-center space-x-2'>

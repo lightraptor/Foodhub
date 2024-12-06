@@ -6,7 +6,8 @@ export const AUTHENTICATION_ROUTES = {
     path: '/payment/confirm',
     label: 'PaymentConfirm'
   },
-  Booking: { path: '/booking', label: 'Booking' }
+  Booking: { path: '/booking', label: 'Booking' },
+  Product: { path: '/product', label: 'Product' }
 }
 
 export const UN_AUTHENTICATION_ROUTES = {
