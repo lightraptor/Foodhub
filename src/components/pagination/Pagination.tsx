@@ -35,10 +35,10 @@ export const Pagination: React.FC<PaginationProps> = ({
           Items per page:
         </label>
         <Select onValueChange={handlePageSizeChange}>
-          <SelectTrigger className='w-[100px]'>
+          <SelectTrigger className='w-[100px] bg-white'>
             <SelectValue placeholder={`${pageSize}`} />
           </SelectTrigger>
-          <SelectContent>
+          <SelectContent className='bg-white'>
             {pageSizes.map((size) => (
               <SelectItem key={size} value={`${size}`}>
                 {size}

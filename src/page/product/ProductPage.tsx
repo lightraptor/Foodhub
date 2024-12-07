@@ -1,4 +1,5 @@
 import { fetchFilterProduct, fetchProduct } from '@/apis/productApi'
+import { Pagination } from '@/components'
 import { FilterProduct, ProductList } from '@/components/listProduct'
 import { Product } from '@/types'
 import { useEffect, useState } from 'react'
@@ -9,7 +10,10 @@ export const ProductPage = () => {
   const [filterProducts, setFilterProducts] = useState<Product[]>([])
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
-  const [noResults, setNoResults] = useState(false) // Trạng thái riêng cho không tìm thấy kết quả
+  const [noResults, setNoResults] = useState(false)
+  const [currentPage, setCurrentPage] = useState(1)
+  const [pageSize, setPageSize] = useState(10)
+  const [totalItems, setTotalItems] = useState<number | undefined>(undefined)
 
   // Fetch all products
   const fetchData = async () => {
@@ -17,13 +21,14 @@ export const ProductPage = () => {
     setError(null)
     setNoResults(false)
     try {
-      const response = await fetchProduct()
+      const response = await fetchProduct({ PageNumber: currentPage, PageSize: pageSize })
       if (response && response.success) {
         const data = await response.data
         setProducts(data.items || [])
+        setTotalItems(data?.totalRecord || undefined)
       } else {
         setProducts([])
-        setNoResults(true) // Không có sản phẩm
+        setNoResults(true)
       }
     } catch (err) {
       setError('An error occurred while fetching products.')
@@ -45,19 +50,25 @@ export const ProductPage = () => {
     setError(null)
     setNoResults(false)
     try {
-      const response = await fetchFilterProduct({ Inactive: true, ...newFilters })
+      const response = await fetchFilterProduct({
+        Inactive: true,
+        PageNumber: currentPage,
+        PageSize: pageSize,
+        ...newFilters
+      })
       if (response && response.success) {
         const data = await response.data
         if (data.items.length > 0) {
           setFilterProducts(data.items)
+          setTotalItems(data?.totalRecord || undefined)
         } else {
           setFilterProducts([])
-          setNoResults(true) // Không tìm thấy kết quả
+          setNoResults(true)
         }
         setIsFiltered(true)
       } else {
         setFilterProducts([])
-        setNoResults(true) // Không tìm thấy kết quả
+        setNoResults(true)
         setIsFiltered(true)
       }
     } catch (err) {
@@ -68,9 +79,25 @@ export const ProductPage = () => {
     }
   }
 
+  // Update data when page or page size changes
   useEffect(() => {
-    fetchData()
-  }, [])
+    if (isFiltered) {
+      applyFilter({})
+    } else {
+      fetchData()
+    }
+  }, [currentPage, pageSize])
+
+  // Handle page change
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page)
+  }
+
+  // Handle page size change
+  const handlePageSizeChange = (size: number) => {
+    setPageSize(size)
+    setCurrentPage(1) // Reset to page 1
+  }
 
   return (
     <div className='container mx-auto'>
@@ -80,7 +107,7 @@ export const ProductPage = () => {
       {loading ? (
         <p className='text-center text-gray-500'>Loading...</p>
       ) : error ? (
-        <p className='text-center text-red-500'>No results found.</p>
+        <p className='text-center text-red-500'>{error}</p>
       ) : isFiltered ? (
         <>
           <h2 className='text-xl font-semibold'>Search Results:</h2>
@@ -100,6 +127,13 @@ export const ProductPage = () => {
           )}
         </>
       )}
+      <Pagination
+        currentPage={currentPage}
+        pageSize={pageSize}
+        totalItems={totalItems}
+        onPageChange={handlePageChange}
+        onPageSizeChange={handlePageSizeChange}
+      />
     </div>
   )
 }

@@ -62,12 +62,17 @@ export interface ProductFilter {
   PageSize?: number
 }
 
-export const fetchProduct = async (): Promise<ApiResponse<ProductResponse>> => {
+export const fetchProduct = async (params: {
+  PageNumber: number
+  PageSize: number
+}): Promise<ApiResponse<ProductResponse>> => {
   try {
-    const response: AxiosResponse<ApiResponse<ProductResponse>> = await instance.get(`/api/Product/get-list`)
+    const response: AxiosResponse<ApiResponse<ProductResponse>> = await instance.get('/api/Product/get-list', {
+      params
+    })
     return response.data
-  } catch (error) {
-    console.error('Error fetching menus:', error)
+  } catch (error: unknown) {
+    console.error('Error fetching products:', error)
     throw error
   }
 }
