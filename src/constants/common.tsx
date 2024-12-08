@@ -1,4 +1,6 @@
-export const baseURL = 'https://192.168.12.210:7143'
+import { Star, StarOff } from 'lucide-react'
+
+export const baseURL = 'https://192.168.12.190:7143'
 
 export function formatToVND(amount: number): string {
   if (isNaN(amount)) {
@@ -9,3 +11,13 @@ export function formatToVND(amount: number): string {
 }
 
 export const MerchantId = 'a74366c8-63e7-49ab-d47a-08dd0d4e1659'
+
+export const renderStars = (rating: number) => {
+  const stars = []
+  for (let i = 1; i <= 5; i++) {
+    stars.push(
+      i <= rating ? <Star key={i} className='text-yellow-400' /> : <StarOff key={i} className='text-gray-400' />
+    )
+  }
+  return stars
+}

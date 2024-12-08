@@ -1,10 +1,11 @@
 import { Layout } from '@/components'
 import { ROUTES } from '@/defines'
 import { useRouteRender } from '@/hooks'
-import { BookingPage, LoginPage, PaymentPage, ProductPage } from '@/page'
+import { BookingPage, LoginPage, PaymentPage, ProductDetailPage, ProductPage } from '@/page'
 import CartPage from '@/page/cart/CartPage'
 import OrderPage from '@/page/order/OrderPage'
 import { RegisterPage } from '@/page/register'
+import { CustomerProfile } from '@/page/user'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 
 export const MainRouter = () => {
@@ -62,6 +63,22 @@ export const MainRouter = () => {
       element: useRouteRender(
         <Layout>
           <ProductPage />
+        </Layout>
+      )
+    },
+    {
+      path: ROUTES.user.path,
+      element: useRouteRender(
+        <Layout>
+          <CustomerProfile />
+        </Layout>
+      )
+    },
+    {
+      path: `${ROUTES.Product.path}/:id`,
+      element: useRouteRender(
+        <Layout>
+          <ProductDetailPage />
         </Layout>
       )
     },

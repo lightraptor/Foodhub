@@ -18,7 +18,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger
 } from '../ui/dropdown-menu'
-import { LogOutIcon } from 'lucide-react'
+import { LogOutIcon, User } from 'lucide-react'
 
 export const Navbar: React.FC = () => {
   const username = localStorage.getItem('user')
@@ -70,7 +70,15 @@ export const Navbar: React.FC = () => {
                   <DropdownMenuContent className='bg-white'>
                     <DropdownMenuLabel>My Account</DropdownMenuLabel>
                     <DropdownMenuSeparator />
-                    <DropdownMenuItem>Profile</DropdownMenuItem>
+                    <DropdownMenuItem>
+                      <button
+                        className=' rounded-md flex gap-2 items-center'
+                        onClick={() => navigate(ROUTES.user.path)}
+                      >
+                        <User className='w-4 h-4 text-black' />
+                        My profile
+                      </button>
+                    </DropdownMenuItem>
                     <DropdownMenuItem>
                       <button className=' rounded-md flex gap-2 items-center' onClick={logout}>
                         <LogOutIcon className='w-4 h-4 text-black' />
