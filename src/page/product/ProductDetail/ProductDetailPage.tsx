@@ -7,34 +7,13 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator
 } from '@/components/ui/breadcrumb'
-import { renderStars } from '@/constants'
-import { Minus, Plus } from 'lucide-react'
-import { useState } from 'react'
+import { Minus, Plus, Star } from 'lucide-react'
+import { useEffect, useState } from 'react'
 import { CommentSection } from './CommentSection'
-
-const product = {
-  id: '8dae2dab-5560-42c5-a543-9e736876412e',
-  code: 'EWRGS',
-  name: 'Cơm tấm',
-  description: '<p>ngon</p>',
-  price: 25000,
-  sellingPrice: 25000,
-  unitName: 'Bát',
-  thumbnail: 'http://res.cloudinary.com/dzrnjd4jt/image/upload/v1733461113/Restaurant/Product/viijepm7vnu65ztpnmvp.jpg',
-  inactive: true,
-  menuDto: {
-    id: '10778fc6-27c8-45f8-8cbf-08dd15b0ba45',
-    menuName: 'Ăn chính',
-    description: 'ngon'
-  },
-  categoryDto: {
-    id: 'bb71d0ec-99da-4239-0c0a-08dd15b11c7d',
-    code: '#000345',
-    name: 'Các loại cơm',
-    description: 'ngon'
-  },
-  productImagesDto: []
-}
+import { useParams } from 'react-router'
+import { Product, Review } from '@/types'
+import { fetchProductById } from '@/apis/productApi'
+import { fetchReviewPagging, getAverageRating } from '@/apis/reviewApi'
 
 const relatedProducts = [
   {
@@ -61,10 +40,74 @@ const relatedProducts = [
 ]
 
 export function ProductDetailPage() {
-  const [comments, setComments] = useState([
-    { id: 1, name: 'Nguyen Van A', rating: 4, comment: 'Món ăn rất ngon!' },
-    { id: 2, name: 'Tran Thi B', rating: 5, comment: 'Xuất sắc!' }
-  ])
+  const { id } = useParams()
+  const [productItem, setProductItem] = useState<Product>()
+  const [comments, setComments] = useState<Review[]>([])
+  const [rating, setRating] = useState(0)
+
+  const fetchProduct = async ({ id }: { id: string }) => {
+    try {
+      const response = await fetchProductById({ id: id || '' })
+      if (!response.success) {
+        console.error(response.message)
+        return
+      }
+      setProductItem(response.data)
+    } catch (error) {
+      console.error('Error fetching product:', error)
+    }
+  }
+
+  const fetchAverageReview = async ({ id }: { id: string }) => {
+    try {
+      // Fetch comments from API
+      const response = await getAverageRating(id || '')
+      if (!response.success) {
+        console.error(response.message)
+        return
+      }
+      if (!response.data) {
+        return
+      }
+      const data = await response.data
+      setRating(data)
+
+      console.log(data)
+    } catch (error) {
+      console.error('Error fetching comments:', error)
+    }
+  }
+
+  const fetchListReviews = async ({ id }: { id: string }) => {
+    try {
+      // Fetch comments from API
+      const response = await fetchReviewPagging({ ProductId: id })
+      if (!response.success) {
+        console.error(response.message)
+        return
+      }
+      const data = await response.data
+      console.log(data.items)
+      setComments(data.items)
+      fetchAverageReview({ id })
+    } catch (error) {
+      console.error('Error fetching comments:', error)
+    }
+  }
+
+  useEffect(() => {
+    if (id) {
+      fetchProduct({ id })
+      fetchListReviews({ id })
+      fetchAverageReview({ id })
+    } else {
+      console.error('No product ID provided')
+    }
+  }, [id])
+
+  useEffect(() => {
+    console.log(comments)
+  }, [comments])
 
   return (
     <div className='container mx-auto px-4 py-8'>
@@ -72,7 +115,11 @@ export function ProductDetailPage() {
       <div className='grid grid-cols-1 md:grid-cols-5 gap-8'>
         {/* Image Section */}
         <div className='md:col-span-2 relative min-h-64 p-4 bg-white rounded-lg flex items-center justify-center'>
-          <img src={product.thumbnail} alt={product.name} className='rounded-lg w-full h-auto object-cover' />
+          <img
+            src={productItem?.thumbnail || ''}
+            alt={productItem?.name}
+            className='rounded-lg w-full h-auto object-cover'
+          />
         </div>
 
         {/* Product Details Section */}
@@ -86,42 +133,48 @@ export function ProductDetailPage() {
                 </BreadcrumbItem>
                 <BreadcrumbSeparator />
                 <BreadcrumbItem>
-                  <BreadcrumbLink href='/'>{product.categoryDto.name}</BreadcrumbLink>
+                  <BreadcrumbLink href='/'>{productItem?.categoryDto.name}</BreadcrumbLink>
                 </BreadcrumbItem>
                 <BreadcrumbSeparator />
                 <BreadcrumbItem>
-                  <BreadcrumbLink href='/'>{product.menuDto.menuName}</BreadcrumbLink>
+                  <BreadcrumbLink href='/'>{productItem?.menuDto.menuName}</BreadcrumbLink>
                 </BreadcrumbItem>
                 <BreadcrumbSeparator />
                 <BreadcrumbItem>
-                  <BreadcrumbPage>{product.name}</BreadcrumbPage>
+                  <BreadcrumbPage>{productItem?.name}</BreadcrumbPage>
                 </BreadcrumbItem>
               </BreadcrumbList>
             </Breadcrumb>
           </div>
 
           {/* Product Name and Pricing */}
-          <h1 className='text-2xl md:text-3xl font-bold mb-4'>{product.name}</h1>
+          <h1 className='text-2xl md:text-3xl font-bold mb-4'>{productItem?.name}</h1>
           <div className='mb-4'>
             <span className='text-xl md:text-2xl font-semibold text-red-600'>
-              {product.sellingPrice.toLocaleString('vi-VN')} ₫
+              {productItem?.sellingPrice.toLocaleString('vi-VN')} ₫
             </span>
-            {product.price !== product.sellingPrice && (
-              <span className='ml-2 text-gray-500 line-through'>{product.price.toLocaleString('vi-VN')} ₫</span>
+            {productItem?.price !== productItem?.sellingPrice && (
+              <span className='ml-2 text-gray-500 line-through'>{productItem?.price.toLocaleString('vi-VN')} ₫</span>
             )}
           </div>
 
           {/* Product Description */}
           <div className='mb-4'>
             <h2 className='text-lg md:text-xl font-bold'>Mô tả sản phẩm</h2>
-            <div dangerouslySetInnerHTML={{ __html: product.description }} />
+            <div dangerouslySetInnerHTML={{ __html: productItem?.description || `` }} />
           </div>
 
           {/* Rating Section */}
-          <div className='flex items-center gap-2 mb-2'>
-            {renderStars(5)}
-            <span className='text-sm text-gray-500'>50 đánh giá</span>
-          </div>
+          {rating > 0 ? (
+            <div className='flex items-center gap-2 mb-2'>
+              {rating.toFixed(1)} <Star className='text-yellow-400' />/
+              <span className='text-sm text-gray-500'>x đánh giá</span>
+            </div>
+          ) : (
+            <div className='flex items-center gap-2 mb-2'>
+              <span className='text-sm text-gray-500'>hiện chưa có đánh giá</span>
+            </div>
+          )}
 
           {/* Quantity Selector */}
           <div className='mb-4 text-lg font-semibold'>
@@ -150,14 +203,16 @@ export function ProductDetailPage() {
       </div>
 
       {/* Comment Section */}
-      <CommentSection comments={comments} setComments={setComments} />
+      {id !== undefined && (
+        <CommentSection comments={comments} fetchData={() => fetchListReviews({ id })} productId={id} />
+      )}
       <div className='mt-8'>
         <h2 className='text-xl font-bold mb-4'>Sản phẩm liên quan</h2>
         <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4'>
           {relatedProducts.map((relatedProduct) => (
             <div key={relatedProduct.id} className='bg-white rounded-lg p-4 shadow-md'>
               <img
-                src={relatedProduct.thumbnail}
+                src={relatedProduct?.thumbnail}
                 alt={relatedProduct.name}
                 className='rounded-lg w-full h-40 object-cover mb-4'
               />

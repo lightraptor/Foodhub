@@ -90,3 +90,12 @@ export type Table = {
   name: string
   areaName: string
 }
+
+export type Review = {
+  id: string
+  productId: string
+  userName: string
+  reviewText: string
+  reviewDate: string
+  rating: number
+}

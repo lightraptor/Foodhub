@@ -92,3 +92,13 @@ export const fetchFilterProduct = async (productFilter: ProductFilter): Promise<
     throw error
   }
 }
+
+export const fetchProductById = async ({ id }: { id: string }): Promise<ApiResponse<ProductItem>> => {
+  try {
+    const response: AxiosResponse<ApiResponse<ProductItem>> = await instance.get(`/api/Product/${id}`)
+    return response.data
+  } catch (error: unknown) {
+    console.error('Error fetching products:', error)
+    throw error
+  }
+}

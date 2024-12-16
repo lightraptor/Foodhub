@@ -1,11 +1,11 @@
 import React, { useState, useCallback } from 'react'
-import { Avatar } from './components/Avatar'
-import { EditableField } from './components/EditableField'
+import { Avatar, EditableCalendar, EditableField, EditableSelect } from './components'
+
 interface CustomerInfo {
   firstName: string
   lastName: string
-  gender: string
-  birthday: string
+  gender: 'Male' | 'Female'
+  birthday: Date
   phoneNumber: string
   address: string
   avatar: string
@@ -16,7 +16,7 @@ export const CustomerProfile: React.FC = () => {
     firstName: 'John',
     lastName: 'Doe',
     gender: 'Male',
-    birthday: '1990-01-01',
+    birthday: new Date('1990-01-01'),
     phoneNumber: '123-456-7890',
     address: '123 Main St, City, Country',
     avatar: '/placeholder.svg?height=100&width=100'
@@ -26,7 +26,7 @@ export const CustomerProfile: React.FC = () => {
   const [isEdited, setIsEdited] = useState(false)
 
   const handleChange = useCallback(
-    (field: keyof CustomerInfo, value: string) => {
+    (field: keyof CustomerInfo, value: any) => {
       setTempCustomer((prev) => {
         const newCustomer = { ...prev, [field]: value }
         setIsEdited(JSON.stringify(newCustomer) !== JSON.stringify(customer))
@@ -70,18 +70,22 @@ export const CustomerProfile: React.FC = () => {
             value={tempCustomer.lastName}
             onChange={(value) => handleChange('lastName', value)}
           />
-          <EditableField
+          <EditableSelect
             label='Gender'
             value={tempCustomer.gender}
-            onChange={(value) => handleChange('gender', value)}
+            onChange={(value) => handleChange('gender', value as 'Male' | 'Female')}
+            options={[
+              { value: 'Male', label: 'Male' },
+              { value: 'Female', label: 'Female' }
+            ]}
           />
-          <EditableField
+          <EditableCalendar
             label='Birthday'
             value={tempCustomer.birthday}
-            onChange={(value) => handleChange('birthday', value)}
-            type='date'
+            onChange={(value) => handleChange('birthday', value || new Date())}
           />
           <EditableField
+            type='tel'
             label='Phone Number'
             value={tempCustomer.phoneNumber}
             onChange={(value) => handleChange('phoneNumber', value)}

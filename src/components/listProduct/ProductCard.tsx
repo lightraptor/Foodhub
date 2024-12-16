@@ -1,13 +1,14 @@
-import { useState } from 'react'
-import { Plus, Minus, Eye } from 'lucide-react'
+import { useEffect, useState } from 'react'
+import { Plus, Minus, Eye, Star } from 'lucide-react'
 import bgImage from '@/assets/bg.png'
 
 import { Button } from '@/components/ui/button'
 import { Product } from '@/types'
 import { postMeal } from '@/apis/mealApi'
 import { toast } from 'react-toastify'
-import { formatToVND, renderStars } from '@/constants'
+import { formatToVND } from '@/constants'
 import { useNavigate } from 'react-router'
+import { getAverageRating } from '@/apis/reviewApi'
 
 interface ProductCardProps {
   product: Product
@@ -17,6 +18,28 @@ interface ProductCardProps {
 export function ProductCard({ product }: ProductCardProps) {
   const navigation = useNavigate()
   const [quantity, setQuantity] = useState(1)
+  const [rating, setRating] = useState(0)
+
+  const fetchAverageReview = async ({ id }: { id: string }) => {
+    try {
+      // Fetch comments from API
+      const response = await getAverageRating(id || '')
+      if (!response.success) {
+        console.error(response.message)
+        return
+      }
+      const data = await response.data
+      setRating(data)
+
+      console.log(data)
+    } catch (error) {
+      console.error('Error fetching comments:', error)
+    }
+  }
+
+  useEffect(() => {
+    fetchAverageReview({ id: product.id })
+  }, [product])
 
   const incrementQuantity = (e: React.MouseEvent) => {
     e.stopPropagation()
@@ -63,8 +86,13 @@ export function ProductCard({ product }: ProductCardProps) {
       </div>
       <div className='p-4 flex flex-col h-[200px] justify-between'>
         <h3 className='text-lg font-semibold mb-2'>{product.name}</h3>
-        <div className='flex flex-row items-center gap-2 mb-2'>{renderStars(5)}</div>
-        <span className='text-sm text-gray-500'>50 lượt review</span>
+        {rating !== null ? (
+          <div className='flex flex-row items-center gap-2 mb-2'>
+            {rating.toFixed(1)} <Star className='w-4 h-4 fill-current text-yellow-500' />
+          </div>
+        ) : (
+          <div className='flex items-center text-sm text-gray-500 mb-2'>hiện chưa có đánh giá</div>
+        )}
         <div className='flex justify-between items-center mb-2'>
           <span className='text-xl font-bold text-blue-600'>{formatToVND(product.sellingPrice)}</span>
           <div className='flex items-center space-x-2'>
