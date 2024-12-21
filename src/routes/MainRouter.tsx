@@ -1,16 +1,33 @@
 import { Layout } from '@/components'
 import { ROUTES } from '@/defines'
 import { useRouteRender } from '@/hooks'
-import { BookingPage, CustomerCouponPage, LoginPage, PaymentPage, ProductDetailPage, ProductPage } from '@/page'
+import {
+  BookingPage,
+  CustomerCouponPage,
+  HomePage,
+  LoginPage,
+  PaymentPage,
+  ProductDetailPage,
+  ProductPage
+} from '@/page'
 import CartPage from '@/page/cart/CartPage'
 import CouponPage from '@/page/coupon/CouponPage'
 import OrderPage from '@/page/order/OrderPage'
 import { RegisterPage } from '@/page/register'
 import { CustomerProfile } from '@/page/user'
+
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 
 export const MainRouter = () => {
   const router = createBrowserRouter([
+    {
+      path: ROUTES.Home.path,
+      element: useRouteRender(
+        <Layout>
+          <HomePage />
+        </Layout>
+      )
+    },
     {
       path: ROUTES.CustomerCoupon.path,
       element: useRouteRender(
