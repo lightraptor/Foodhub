@@ -99,3 +99,20 @@ export type Review = {
   reviewDate: string
   rating: number
 }
+
+export type Coupon = {
+  id: string
+  couponCode: string
+  discountPercent: number
+  discountAmount: number
+  quantity: number
+  inactive: boolean
+}
+
+export type UserCoupon = {
+  userId: string
+  couponId: string
+  couponCode: string
+  discountPercent: number
+  discountAmount: number
+}

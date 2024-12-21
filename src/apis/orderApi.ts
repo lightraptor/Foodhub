@@ -16,7 +16,7 @@ interface orderPost {
   customerName: string
   customerPhone: string
   shippingAddress: string
-  discountAmount: number
+  couponId: string
 }
 
 interface ApiResponse<T> {
@@ -62,7 +62,7 @@ export const postOrder = async ({
   customerName,
   customerPhone,
   shippingAddress,
-  discountAmount
+  couponId
 }: orderPost): Promise<ApiResponse<OrderResponse>> => {
   const paypoad = {
     mealId,
@@ -71,7 +71,7 @@ export const postOrder = async ({
     customerName,
     customerPhone,
     shippingAddress,
-    discountAmount
+    couponId
   }
   try {
     const response: AxiosResponse<ApiResponse<OrderResponse>> = await instance.post(`/api/order`, paypoad)

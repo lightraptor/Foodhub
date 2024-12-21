@@ -3,7 +3,8 @@ export const AUTHENTICATION_MENUS = {
   Cart: { path: '/cart', label: 'Cart' },
   Order: { path: '/order', label: 'Order' },
   Booking: { path: '/booking', label: 'Booking' },
-  Product: { path: '/product', label: 'Product' }
+  Product: { path: '/product', label: 'Product' },
+  Coupon: { path: '/coupon', label: 'Coupon' }
 }
 
 export const UN_AUTHENTICATION_MENUS = {

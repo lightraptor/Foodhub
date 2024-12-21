@@ -11,6 +11,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { fetchPaymentDestination, paymentItem } from '@/apis/paymentDestination'
 import { fetchPayment } from '@/apis/paymentApi'
 import { fetchMerchantPaging } from '@/apis/merchantApi'
+import { UserCoupon } from '@/types'
+import { getCustomerCoupon } from '@/apis/userCouponApi'
 
 // Define the schema
 const formSchema = z.object({
@@ -28,16 +30,19 @@ const formSchema = z.object({
 })
 
 const OrderForm = ({ orderType }: { orderType: number }) => {
+  const baseUrl = `${window.location.protocol}//${window.location.hostname}:${window.location.port}`
   const [listMethod, setListMethod] = React.useState<paymentItem[]>([])
   const [payMentMethod, setPayMentMethod] = React.useState<string>('')
   const [merchantId, setMerchantId] = React.useState<string>('')
+  const [coupons, setCoupons] = React.useState<UserCoupon[]>([])
+  const [selectedCouponId, setSelectedCouponId] = React.useState<string>('')
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: '',
       phone: '',
       address: '',
-      contentPayment: ''
+      contentPayment: 'client'
     }
   })
 
@@ -56,18 +61,41 @@ const OrderForm = ({ orderType }: { orderType: number }) => {
     }
   }
 
+  const fetchUserCoupons = async () => {
+    try {
+      const response = await getCustomerCoupon()
+      if (!response.success) {
+        console.error(response.message)
+        return
+      }
+      const data = await response.data
+
+      // Remove duplicate coupons based on couponId
+      const uniqueCoupons = data.filter(
+        (value, index, self) => index === self.findIndex((t) => t.couponId === value.couponId)
+      )
+
+      setCoupons(uniqueCoupons)
+    } catch (error) {
+      console.error('Error fetching customer coupons:', error)
+    }
+  }
+
   const fetchMerchantId = async () => {
     try {
       const response = await fetchMerchantPaging()
       const data = await response.data
-      if (!data) return
-      setMerchantId(data?.items[0].id)
+      if (data?.items) {
+        const merchant = data.items.find((item) => item.merchantReturnUrl.includes(baseUrl))
+        if (merchant) setMerchantId(merchant.id)
+      }
     } catch (error) {
       console.error('Error fetching data:', error)
     }
   }
 
   useEffect(() => {
+    fetchUserCoupons()
     fetchListMethod()
     fetchMerchantId()
   }, [])
@@ -86,7 +114,7 @@ const OrderForm = ({ orderType }: { orderType: number }) => {
       customerName: values.name,
       customerPhone: values.phone,
       shippingAddress: orderType === 1 ? 'tại quán' : values.address || '',
-      discountAmount: 0
+      couponId: selectedCouponId
     }
     console.log(payload)
     try {
@@ -168,34 +196,36 @@ const OrderForm = ({ orderType }: { orderType: number }) => {
             )}
           />
         )}
-        <Select onValueChange={(value) => setPayMentMethod(value)}>
-          <SelectTrigger className='w-[260px]'>
-            <SelectValue placeholder='Chọn hình thức thanh toán' />
-          </SelectTrigger>
-          <SelectContent className='bg-[#fff]'>
-            {listMethod.map((item: paymentItem) => (
-              <SelectItem key={item.id} value={item.id}>
-                {item.desShortName}
-              </SelectItem>
-            ))}
-            {orderType == 1 && <SelectItem value='thanh toán tại quầy'>thanh toán tại quầy</SelectItem>}
-          </SelectContent>
-        </Select>
-        {payMentMethod !== 'thanh toán tại quầy' && (
-          <FormField
-            control={form.control}
-            name='contentPayment'
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Content Payment</FormLabel>
-                <FormControl>
-                  <Input placeholder='Enter your content payment' {...field} value={field.value || ''} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        )}
+
+        <div className='flex flex-row gap-3'>
+          <Select onValueChange={(value) => setPayMentMethod(value)}>
+            <SelectTrigger className='w-[260px]'>
+              <SelectValue placeholder='Chọn hình thức thanh toán' />
+            </SelectTrigger>
+            <SelectContent className='bg-[#fff]'>
+              {listMethod.map((item: paymentItem) => (
+                <SelectItem key={item.id} value={item.id}>
+                  {item.desShortName}
+                </SelectItem>
+              ))}
+              {orderType == 1 && <SelectItem value='thanh toán tại quầy'>thanh toán tại quầy</SelectItem>}
+            </SelectContent>
+          </Select>
+          {/* Coupon Selection */}
+          <Select onValueChange={(value) => setSelectedCouponId(value)}>
+            <SelectTrigger className='w-[260px]'>
+              <SelectValue placeholder='Chọn coupon' />
+            </SelectTrigger>
+            <SelectContent className='bg-[#fff]'>
+              {coupons.map((coupon, index) => (
+                <SelectItem key={index} value={coupon.couponId}>
+                  {coupon.couponCode} - Giảm {coupon.discountAmount} VND
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+
         {/* Submit Button */}
         <Button type='submit' className='bg-[#0765ff] text-[#fff] w-full'>
           Submit
