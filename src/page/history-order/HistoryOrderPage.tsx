@@ -16,10 +16,11 @@ export function HistoryOrderPage() {
     try {
       // Simulate fetching data from API
       const order = await getOrderDetail({ orderId: id || '' })
+      console.log('Order:', order)
+      setOrderData(order)
       const comments = await getBooking({ id: bookingId || '' })
       console.log('Order:', order)
       setBookingData(comments.data)
-      setOrderData(order)
       console.log('Comments:', comments.data)
     } catch (err) {
       console.error('Error fetching data:', err)
