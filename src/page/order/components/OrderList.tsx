@@ -1,11 +1,16 @@
 import { getMealCustomer } from '@/apis/mealApi'
 import { formatToVND } from '@/constants'
 import { MealList } from '@/types'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 
-const OrderList = () => {
-  const [data, setData] = React.useState<MealList[]>([])
-  const [total, setTotal] = React.useState(0)
+const OrderList = ({ order }: { order: number }) => {
+  const [shipping, setShipping] = useState(0)
+  const [data, setData] = useState<MealList[]>([])
+  const [total, setTotal] = useState(0)
+
+  useEffect(() => {
+    setShipping(order === 2 ? 30000 : 0)
+  }, [order])
 
   const fetchMeals = async () => {
     try {
@@ -43,9 +48,15 @@ const OrderList = () => {
               <span className='font-semibold'>{formatToVND(item.price)}</span>
             </div>
           ))}
+          {order == 2 && (
+            <div className='flex flex-row justify-between items-center'>
+              <span className='font-semibold'>Shipping</span>
+              <span className='font-semibold'>{formatToVND(30000)}</span>
+            </div>
+          )}
           <div className='flex flex-row justify-between items-center border-t-2 pt-4'>
             <span className='font-semibold'>Total</span>
-            <span className='font-semibold'>{formatToVND(total)}</span>
+            <span className='font-semibold'>{formatToVND(total + shipping)}</span>
           </div>
         </div>
       </div>

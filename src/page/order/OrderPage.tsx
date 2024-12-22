@@ -2,9 +2,11 @@ import { ArrowLeft } from 'lucide-react'
 import OrderList from './components/OrderList'
 import OrderTabs from './components/OrderTabs'
 import { useNavigate } from 'react-router-dom'
+import { useState } from 'react'
 
 const OrderPage = () => {
   const navigate = useNavigate()
+  const [order, setOrder] = useState(2)
 
   const handleBack = () => {
     navigate(-1) // Quay về trang trước
@@ -23,10 +25,10 @@ const OrderPage = () => {
       <h1 className='text-3xl font-bold text-center'>Checkout</h1>
       <div className='flex md:flex-row flex-col-reverse gap-2'>
         <div className='md:w-2/3 w-full mx-auto'>
-          <OrderTabs />
+          <OrderTabs onOrder={setOrder} />
         </div>
         <div className='md:w-1/3 w-full mx-auto'>
-          <OrderList />
+          <OrderList order={order} />
         </div>
       </div>
     </div>

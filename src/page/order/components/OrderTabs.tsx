@@ -2,7 +2,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import OrderForm from './OrderForm'
 import { OrderFormDineIn } from './OrderFormDineIn'
 
-const OrderTabs = () => {
+const OrderTabs = ({ onOrder }: { onOrder: (value: number) => void }) => {
   return (
     <>
       <Tabs defaultValue='account' className='md:w-3/4 w-fullmd:mx-none mx-3 my-10 flex flex-col items-center'>
@@ -10,12 +10,18 @@ const OrderTabs = () => {
           <TabsTrigger
             value='account'
             className='data-[state=active]:bg-[#0765ff] data-[state=active]:text-[#fff] rounded-md w-1/2 text-center'
+            onClick={() => {
+              onOrder(2)
+            }}
           >
             Takeaway
           </TabsTrigger>
           <TabsTrigger
             className='data-[state=active]:bg-[#0765ff] data-[state=active]:text-[#fff] rounded-md w-1/2 text-center'
             value='password'
+            onClick={() => {
+              onOrder(1)
+            }}
           >
             Dine In
           </TabsTrigger>
