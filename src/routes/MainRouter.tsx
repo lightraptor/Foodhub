@@ -1,17 +1,55 @@
 import { Layout } from '@/components'
 import { ROUTES } from '@/defines'
 import { useRouteRender } from '@/hooks'
-import { BookingPage, CustomerCouponPage, LoginPage, PaymentPage, ProductDetailPage, ProductPage } from '@/page'
+import {
+  BookingPage,
+  CustomerCouponPage,
+  HistoryPage,
+  LoginPage,
+  PaymentPage,
+  ProductDetailPage,
+  ProductPage
+} from '@/page'
 import CartPage from '@/page/cart/CartPage'
 import CouponPage from '@/page/coupon/CouponPage'
 import OrderPage from '@/page/order/OrderPage'
 import { RegisterPage } from '@/page/register'
 import { CustomerProfile } from '@/page/user'
+import { HistoryOrderPage } from '@/page/history-order'
 
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 
 export const MainRouter = () => {
   const router = createBrowserRouter([
+    {
+      path: ROUTES.History.path,
+      element: useRouteRender(
+        <Layout>
+          <HistoryPage />
+        </Layout>
+      )
+    },
+    {
+      path: ROUTES.History.path,
+      children: [
+        {
+          index: true,
+          element: useRouteRender(
+            <Layout>
+              <HistoryPage />
+            </Layout>
+          )
+        },
+        {
+          path: ':id',
+          element: useRouteRender(
+            <Layout>
+              <HistoryOrderPage />
+            </Layout>
+          )
+        }
+      ]
+    },
     {
       path: ROUTES.Home.path,
       element: useRouteRender(

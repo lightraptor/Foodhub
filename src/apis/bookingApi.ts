@@ -48,3 +48,13 @@ export const postBooking = async ({
     throw error
   }
 }
+
+export const getBooking = async ({ id }: { id: string }): Promise<ApiResponse<BookingItem>> => {
+  try {
+    const response: AxiosResponse<ApiResponse<BookingItem>> = await instance.get(`/api/booking/${id}`)
+    return response.data
+  } catch (error) {
+    console.error('Error fetching menus:', error)
+    throw error
+  }
+}

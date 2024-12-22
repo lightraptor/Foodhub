@@ -10,7 +10,8 @@ export const AUTHENTICATION_ROUTES = {
   Product: { path: '/product', label: 'Product' },
   user: { path: '/user', label: 'User' },
   Coupon: { path: '/coupon', label: 'Coupon' },
-  CustomerCoupon: { path: '/customer-coupon', label: 'CustomerCoupon' }
+  CustomerCoupon: { path: '/customer-coupon', label: 'CustomerCoupon' },
+  History: { path: '/history', label: 'History' }
 }
 
 export const UN_AUTHENTICATION_ROUTES = {

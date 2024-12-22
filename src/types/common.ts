@@ -116,3 +116,24 @@ export type UserCoupon = {
   discountPercent: number
   discountAmount: number
 }
+
+export type OrderHistoryItem = {
+  id: string
+  bookingId: string
+  orderType: number
+  orderTypeName: string
+  orderStatus: string
+  createdDate: string
+  lastUpdatedAt: string
+  shippingDate: string
+  customerId: string
+  customerName: string
+  customerPhone: string
+  shippingAddress: string
+  deliveryAmount: number
+  depositAmount: number
+  discountAmount: number
+  orderAmount: number
+  totalAmount: number
+  orderDetails: any[]
+}

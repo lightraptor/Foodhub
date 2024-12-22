@@ -1,5 +1,6 @@
 import { baseURL } from '@/constants'
 import axios, { AxiosResponse } from 'axios'
+import { OrderHistoryItem } from '@/types'
 
 const instance = axios.create({
   baseURL: baseURL,
@@ -23,6 +24,14 @@ interface ApiResponse<T> {
   data: T
   message: string
   success: boolean
+}
+
+interface CustomerOrderResponse {
+  items: OrderHistoryItem[]
+  pageCount: number
+  pageNumber: number
+  pageSize: number
+  totalRecord: number
 }
 
 export interface OrderResponse {
@@ -53,6 +62,7 @@ export interface OrderDetail {
   price: number
   quantity: number
   totalPrice: number
+  createAt: string
 }
 
 export const postOrder = async ({
@@ -78,6 +88,41 @@ export const postOrder = async ({
     return response.data
   } catch (error) {
     console.error('Error fetching menus:', error)
+    throw error
+  }
+}
+
+export const getCustomerOrder = async ({
+  userId
+}: {
+  userId: string
+  OrderStatus?: string
+  SortBy?: number
+  PageNumber?: number
+  PageSize?: number
+}): Promise<ApiResponse<CustomerOrderResponse>> => {
+  try {
+    const response: AxiosResponse<ApiResponse<CustomerOrderResponse>> = await instance.get(
+      '/api/order/customer/get-orders-paging',
+      {
+        params: {
+          userId
+        }
+      }
+    )
+    return response.data
+  } catch (error: unknown) {
+    console.error('Error fetching products:', error)
+    throw error
+  }
+}
+
+export const getOrderDetail = async ({ orderId }: { orderId: string }): Promise<OrderDetail[]> => {
+  try {
+    const response: AxiosResponse<OrderDetail[]> = await instance.get(`/api/order-detail/${orderId}`)
+    return response.data
+  } catch (error: unknown) {
+    console.error('Error fetching products:', error)
     throw error
   }
 }
