@@ -1,15 +1,7 @@
 import { Layout } from '@/components'
 import { ROUTES } from '@/defines'
 import { useRouteRender } from '@/hooks'
-import {
-  BookingPage,
-  CustomerCouponPage,
-  HomePage,
-  LoginPage,
-  PaymentPage,
-  ProductDetailPage,
-  ProductPage
-} from '@/page'
+import { BookingPage, CustomerCouponPage, LoginPage, PaymentPage, ProductDetailPage, ProductPage } from '@/page'
 import CartPage from '@/page/cart/CartPage'
 import CouponPage from '@/page/coupon/CouponPage'
 import OrderPage from '@/page/order/OrderPage'
@@ -24,7 +16,7 @@ export const MainRouter = () => {
       path: ROUTES.Home.path,
       element: useRouteRender(
         <Layout>
-          <HomePage />
+          <BookingPage />
         </Layout>
       )
     },

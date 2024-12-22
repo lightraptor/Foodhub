@@ -10,10 +10,12 @@ import {
 import { Minus, Plus, Star } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { CommentSection } from './CommentSection'
-import { useParams } from 'react-router'
+import { useNavigate, useParams } from 'react-router'
 import { Product, Review } from '@/types'
 import { fetchProductById } from '@/apis/productApi'
 import { fetchReviewPagging, getAverageRating } from '@/apis/reviewApi'
+import { postMeal } from '@/apis/mealApi'
+import { toast } from 'react-toastify'
 
 const relatedProducts = [
   {
@@ -40,10 +42,23 @@ const relatedProducts = [
 ]
 
 export function ProductDetailPage() {
+  const navigate = useNavigate()
   const { id } = useParams()
   const [productItem, setProductItem] = useState<Product>()
   const [comments, setComments] = useState<Review[]>([])
   const [rating, setRating] = useState(0)
+  const [numberReview, setNumberReview] = useState(0)
+  const [quantity, setQuantity] = useState(1)
+
+  const incrementQuantity = (e: React.MouseEvent) => {
+    e.stopPropagation()
+    setQuantity((prev) => prev + 1)
+  }
+
+  const decrementQuantity = (e: React.MouseEvent) => {
+    e.stopPropagation()
+    setQuantity((prev) => Math.max(1, prev - 1))
+  }
 
   const fetchProduct = async ({ id }: { id: string }) => {
     try {
@@ -78,6 +93,25 @@ export function ProductDetailPage() {
     }
   }
 
+  const addToCart = async (): Promise<boolean> => {
+    try {
+      const response = await postMeal({ productId: id || '', quantity })
+      const data = await response.data
+      if (!response.success) {
+        console.error(response.message)
+        toast.error('Thêm vào giỏ hàng thất bại!', { autoClose: 3000 })
+        return false
+      }
+      localStorage.setItem('cartId', data.id)
+      toast.success(response.message, { autoClose: 3000 })
+      return true
+    } catch (error) {
+      console.error('Error adding to cart:', error)
+      toast.error('Có lỗi xảy ra, vui lòng thử lại!', { autoClose: 3000 })
+      return false
+    }
+  }
+
   const fetchListReviews = async ({ id }: { id: string }) => {
     try {
       // Fetch comments from API
@@ -89,6 +123,7 @@ export function ProductDetailPage() {
       const data = await response.data
       console.log(data.items)
       setComments(data.items)
+      setNumberReview(data.totalRecord)
       fetchAverageReview({ id })
     } catch (error) {
       console.error('Error fetching comments:', error)
@@ -168,7 +203,7 @@ export function ProductDetailPage() {
           {rating > 0 ? (
             <div className='flex items-center gap-2 mb-2'>
               {rating.toFixed(1)} <Star className='text-yellow-400' />/
-              <span className='text-sm text-gray-500'>x đánh giá</span>
+              <span className='text-sm text-gray-500'>{numberReview} đánh giá</span>
             </div>
           ) : (
             <div className='flex items-center gap-2 mb-2'>
@@ -180,11 +215,11 @@ export function ProductDetailPage() {
           <div className='mb-4 text-lg font-semibold'>
             <p>Số lượng</p>
             <div className='flex items-center space-x-2 my-4'>
-              <Button variant='outline' size='icon'>
+              <Button variant='outline' size='icon' onClick={decrementQuantity}>
                 <Minus className='h-4 w-4' />
               </Button>
-              <span className='font-semibold'>1</span>
-              <Button variant='outline' size='icon'>
+              <span className='font-semibold'>{quantity}</span>
+              <Button variant='outline' size='icon' onClick={incrementQuantity}>
                 <Plus className='h-4 w-4' />
               </Button>
             </div>
@@ -192,10 +227,21 @@ export function ProductDetailPage() {
 
           {/* Action Buttons */}
           <div className='flex flex-col sm:flex-row gap-4 w-full'>
-            <button className='w-full sm:w-1/2 bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition duration-300'>
+            <button
+              className='w-full sm:w-1/2 bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition duration-300'
+              onClick={addToCart}
+            >
               Thêm vào giỏ hàng
             </button>
-            <button className='w-full sm:w-1/2 bg-red-600 text-white px-6 py-2 rounded-lg hover:bg-red-700 transition duration-300'>
+            <button
+              className='w-full sm:w-1/2 bg-red-600 text-white px-6 py-2 rounded-lg hover:bg-red-700 transition duration-300'
+              onClick={async () => {
+                const success = await addToCart()
+                if (success) {
+                  navigate('/order')
+                }
+              }}
+            >
               Thanh toán
             </button>
           </div>
