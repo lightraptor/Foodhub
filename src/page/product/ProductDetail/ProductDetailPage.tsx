@@ -12,39 +12,40 @@ import { useEffect, useState } from 'react'
 import { CommentSection } from './CommentSection'
 import { useNavigate, useParams } from 'react-router'
 import { Product, Review } from '@/types'
-import { fetchProductById } from '@/apis/productApi'
+import { fetchFilterProduct, fetchProductById } from '@/apis/productApi'
 import { fetchReviewPagging, getAverageRating } from '@/apis/reviewApi'
 import { postMeal } from '@/apis/mealApi'
 import { toast } from 'react-toastify'
 
-const relatedProducts = [
-  {
-    id: '1',
-    name: 'Cơm gà',
-    price: 30000,
-    thumbnail:
-      'http://res.cloudinary.com/dzrnjd4jt/image/upload/v1733461113/Restaurant/Product/viijepm7vnu65ztpnmvp.jpg'
-  },
-  {
-    id: '2',
-    name: 'Cơm sườn',
-    price: 35000,
-    thumbnail:
-      'http://res.cloudinary.com/dzrnjd4jt/image/upload/v1733461113/Restaurant/Product/viijepm7vnu65ztpnmvp.jpg'
-  },
-  {
-    id: '3',
-    name: 'Cơm chay',
-    price: 20000,
-    thumbnail:
-      'http://res.cloudinary.com/dzrnjd4jt/image/upload/v1733461113/Restaurant/Product/viijepm7vnu65ztpnmvp.jpg'
-  }
-]
+// const relatedProducts = [
+//   {
+//     id: '1',
+//     name: 'Cơm gà',
+//     price: 30000,
+//     thumbnail:
+//       'http://res.cloudinary.com/dzrnjd4jt/image/upload/v1733461113/Restaurant/Product/viijepm7vnu65ztpnmvp.jpg'
+//   },
+//   {
+//     id: '2',
+//     name: 'Cơm sườn',
+//     price: 35000,
+//     thumbnail:
+//       'http://res.cloudinary.com/dzrnjd4jt/image/upload/v1733461113/Restaurant/Product/viijepm7vnu65ztpnmvp.jpg'
+//   },
+//   {
+//     id: '3',
+//     name: 'Cơm chay',
+//     price: 20000,
+//     thumbnail:
+//       'http://res.cloudinary.com/dzrnjd4jt/image/upload/v1733461113/Restaurant/Product/viijepm7vnu65ztpnmvp.jpg'
+//   }
+// ]
 
 export function ProductDetailPage() {
   const navigate = useNavigate()
   const { id } = useParams()
   const [productItem, setProductItem] = useState<Product>()
+  const [relatedProducts, setRelatedProducts] = useState<Product[]>([])
   const [comments, setComments] = useState<Review[]>([])
   const [rating, setRating] = useState(0)
   const [numberReview, setNumberReview] = useState(0)
@@ -68,6 +69,22 @@ export function ProductDetailPage() {
         return
       }
       setProductItem(response.data)
+    } catch (error) {
+      console.error('Error fetching product:', error)
+    }
+  }
+
+  useEffect(() => {
+    fetchRetatedProduct({ id: productItem?.menuDto.id || '' })
+  }, [productItem?.menuDto.id])
+  const fetchRetatedProduct = async ({ id }: { id: string }) => {
+    try {
+      const response = await fetchFilterProduct({ menuId: id, Inactive: true })
+      if (!response.success) {
+        console.error(response.message)
+        return
+      }
+      setRelatedProducts(response.data.items)
     } catch (error) {
       console.error('Error fetching product:', error)
     }

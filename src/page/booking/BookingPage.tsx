@@ -30,7 +30,7 @@ export const BookingPage = () => {
       const data = await response.data
       console.log(data)
       toast.success(response.message, { autoClose: 2000 })
-      navigate('/')
+      navigate('/product')
       if (!response.success) {
         console.error(response.message)
         return
