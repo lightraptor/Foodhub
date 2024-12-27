@@ -4,6 +4,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { fetchActiveMenu } from '@/apis/menuApi'
 import { fetchActiveCategory } from '@/apis/categoryApi'
 import { Category, Menu } from '@/types'
+import { Filter } from 'lucide-react'
 
 interface ProductFilterProps {
   onApplyFilter: (filters: {
@@ -69,28 +70,28 @@ export const FilterProduct: React.FC<ProductFilterProps> = ({ onApplyFilter }) =
   return (
     <div className='flex md:flex-row flex-col space-y-4 items-center mb-8 gap-2 py-2 px-2 md:w-fit w-full'>
       <Input
-        placeholder='Search...'
+        placeholder='Tìm kiếm ...'
         value={localFilters.SearchText}
         onChange={(e) => handleChange('SearchText', e.target.value)}
-        className='md:w-[150px] w-full  mt-4 border-none shadow-lg'
+        className='md:w-[150px] w-full  mt-4 border-none shadow-lg bg-white'
       />
       <Input
         type='number'
-        placeholder='Price From'
+        placeholder='Giá thấp nhất'
         value={localFilters.PriceFrom || ''}
         onChange={(e) => handleChange('PriceFrom', Number(e.target.value))}
-        className='md:w-[150px] w-full border-none shadow-lg'
+        className='md:w-[150px] w-full border-none shadow-lg bg-white'
       />
       <Input
         type='number'
-        placeholder='Price To'
+        placeholder='Giá cao nhất'
         value={localFilters.PriceTo || ''}
         onChange={(e) => handleChange('PriceTo', Number(e.target.value))}
-        className='md:w-[150px] w-full border-none shadow-lg'
+        className='md:w-[150px] w-full border-none shadow-lg bg-white'
       />
       <Select onValueChange={(value) => handleChange('CategoryId', value === 'reset' ? '' : value)}>
         <SelectTrigger className='md:w-[150px] w-full border-none shadow-lg bg-[#fff]'>
-          <SelectValue placeholder='Select Category' />
+          <SelectValue placeholder='Chọn danh mục' />
         </SelectTrigger>
         <SelectContent className='bg-[#fff] border-none'>
           <SelectItem value='reset'>Reset</SelectItem>
@@ -103,7 +104,7 @@ export const FilterProduct: React.FC<ProductFilterProps> = ({ onApplyFilter }) =
       </Select>
       <Select onValueChange={(value) => handleChange('MenuId', value === 'reset' ? '' : value)}>
         <SelectTrigger className='md:w-[150px] w-full border-none shadow-lg bg-[#fff]'>
-          <SelectValue placeholder='Select Menu' />
+          <SelectValue placeholder='Chọn thực đơn' />
         </SelectTrigger>
         <SelectContent className='bg-[#fff] border-none'>
           <SelectItem value='reset'>Reset</SelectItem>
@@ -118,7 +119,8 @@ export const FilterProduct: React.FC<ProductFilterProps> = ({ onApplyFilter }) =
         className='bg-[#0765ff] text-[#fff] py-2 px-4 rounded hover:bg-[#076fff] h-[36px] flex items-center justify-center'
         onClick={handleApplyFilter}
       >
-        Apply Filter
+        <Filter className='mr-2' />
+        Bộ lọc
       </button>
     </div>
   )

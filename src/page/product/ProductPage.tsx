@@ -101,7 +101,7 @@ export const ProductPage = () => {
 
   return (
     <div className='container mx-auto'>
-      <h1 className='text-3xl font-bold text-center my-8'>Our Products</h1>
+      <h1 className='text-3xl font-bold text-center my-8'>Danh sách sản phẩm</h1>
       <FilterProduct onApplyFilter={applyFilter} />
 
       {loading ? (
@@ -119,9 +119,9 @@ export const ProductPage = () => {
         </>
       ) : (
         <>
-          <h2 className='text-xl font-semibold'>All Products:</h2>
+          <h2 className='text-xl font-semibold'>Tất cả sản phẩm:</h2>
           {noResults ? (
-            <p className='text-center text-gray-500'>No products available.</p>
+            <p className='text-center text-gray-500'>Hiện không có sản phẩm.</p>
           ) : (
             <ProductList products={products} />
           )}

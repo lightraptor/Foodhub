@@ -7,7 +7,6 @@ interface PaginationProps {
   totalItems?: number
   onPageChange: (page: number) => void
   onPageSizeChange: (size: number) => void
-  disableDisplayTotal?: boolean
 }
 
 export const Pagination: React.FC<PaginationProps> = ({
@@ -15,8 +14,7 @@ export const Pagination: React.FC<PaginationProps> = ({
   pageSize,
   totalItems = 0,
   onPageChange,
-  onPageSizeChange,
-  disableDisplayTotal
+  onPageSizeChange
 }) => {
   const totalPages = Math.max(Math.ceil(totalItems / pageSize), 1) // Tổng số trang
   const pageSizes = [5, 10, 20, 50]
@@ -32,13 +30,13 @@ export const Pagination: React.FC<PaginationProps> = ({
       {/* Select Page Size */}
       <div className='flex items-center'>
         <label htmlFor='pageSize' className='mr-2 text-sm font-medium'>
-          Items per page:
+          Dữ liệu mỗi trang:
         </label>
         <Select onValueChange={handlePageSizeChange}>
-          <SelectTrigger className='w-[100px] bg-white'>
+          <SelectTrigger className='w-[100px]'>
             <SelectValue placeholder={`${pageSize}`} />
           </SelectTrigger>
-          <SelectContent className='bg-white'>
+          <SelectContent>
             {pageSizes.map((size) => (
               <SelectItem key={size} value={`${size}`}>
                 {size}
@@ -49,13 +47,11 @@ export const Pagination: React.FC<PaginationProps> = ({
       </div>
 
       {/* Total Items Display */}
-      {!disableDisplayTotal && (
-        <div className='text-sm text-gray-600'>
-          <span>
-            Total records: <strong>{totalItems}</strong>
-          </span>
-        </div>
-      )}
+      <div className='text-sm text-gray-600'>
+        <span>
+          Tổng số dữ liệu: <strong>{totalItems}</strong>
+        </span>
+      </div>
 
       {/* Pagination Controls */}
       <div className='flex items-center space-x-2'>
@@ -65,7 +61,7 @@ export const Pagination: React.FC<PaginationProps> = ({
           disabled={currentPage === 1}
           className='px-3 py-1 text-sm font-medium text-[#fff] bg-[#3b82f6] rounded hover:bg-[#2563eb] disabled:bg-[#d1d5db] disabled:cursor-not-allowed'
         >
-          Previous
+          Trang trước
         </button>
 
         {/* Page Buttons */}
@@ -87,7 +83,7 @@ export const Pagination: React.FC<PaginationProps> = ({
           disabled={currentPage === totalPages}
           className='px-3 py-1 text-sm font-medium text-[#fff] bg-[#3b82f6] rounded hover:bg-[#2563eb] disabled:bg-[#d1d5db] disabled:cursor-not-allowed'
         >
-          Next
+          Trang kế
         </button>
       </div>
     </div>
