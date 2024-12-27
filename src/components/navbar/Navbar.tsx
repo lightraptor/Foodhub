@@ -10,14 +10,7 @@ import { useAuth } from '@/hooks'
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Button } from '../ui/button'
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger
-} from '../ui/dropdown-menu'
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '../ui/dropdown-menu'
 import { History, LogOutIcon, SquarePercent, User } from 'lucide-react'
 
 export const Navbar: React.FC = () => {
@@ -43,7 +36,7 @@ export const Navbar: React.FC = () => {
   }
 
   return (
-    <nav className='bg-baseBackground'>
+    <nav className='bg-white'>
       <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
         <div className='flex justify-between h-16 items-center'>
           {/* Logo */}
@@ -68,15 +61,13 @@ export const Navbar: React.FC = () => {
                     <Button>{username}</Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent className='bg-white'>
-                    <DropdownMenuLabel>My Account</DropdownMenuLabel>
-                    <DropdownMenuSeparator />
                     <DropdownMenuItem>
                       <button
                         className=' rounded-md flex gap-2 items-center'
                         onClick={() => navigate(ROUTES.user.path)}
                       >
                         <User className='w-4 h-4 text-black' />
-                        My profile
+                        Thông tin cá nhân
                       </button>
                     </DropdownMenuItem>
                     <DropdownMenuItem>
@@ -85,7 +76,7 @@ export const Navbar: React.FC = () => {
                         onClick={() => navigate(ROUTES.History.path)}
                       >
                         <History className='w-4 h-4 text-black' />
-                        Order History
+                        Lịch sử đơn hàng
                       </button>
                     </DropdownMenuItem>
                     <DropdownMenuItem>
@@ -94,13 +85,13 @@ export const Navbar: React.FC = () => {
                         onClick={() => navigate(ROUTES.CustomerCoupon.path)}
                       >
                         <SquarePercent className='w-4 h-4 text-black' />
-                        My coupons
+                        Mã giảm của tôi
                       </button>
                     </DropdownMenuItem>
                     <DropdownMenuItem>
                       <button className=' rounded-md flex gap-2 items-center' onClick={logout}>
                         <LogOutIcon className='w-4 h-4 text-black' />
-                        Logout
+                        Đăng xuất
                       </button>
                     </DropdownMenuItem>
                   </DropdownMenuContent>

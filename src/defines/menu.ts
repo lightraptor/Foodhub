@@ -1,10 +1,9 @@
 export const AUTHENTICATION_MENUS = {
-  Home: { path: '/', label: 'Home' },
-  Cart: { path: '/cart', label: 'Cart' },
-  Order: { path: '/order', label: 'Order' },
-  Booking: { path: '/booking', label: 'Booking' },
-  Product: { path: '/product', label: 'Product' },
-  Coupon: { path: '/coupon', label: 'Coupon' }
+  Home: { path: '/', label: 'Trang chủ' },
+  Booking: { path: '/booking', label: 'Đặt bàn' },
+  Product: { path: '/product', label: 'Sản phẩm' },
+  Coupon: { path: '/coupon', label: 'Mã giảm giá' },
+  Cart: { path: '/cart', label: 'Giỏ hàng' }
 }
 
 export const UN_AUTHENTICATION_MENUS = {

@@ -6,7 +6,7 @@ export interface Product {
   price: number
   sellingPrice: number
   unitName: string
-  thumbnail: string | null
+  thumbnail: string
   inactive: boolean
   menuDto: {
     id: string
