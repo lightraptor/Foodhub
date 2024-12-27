@@ -6,7 +6,8 @@ const instance = axios.create({
   baseURL: baseURL,
   headers: {
     'Content-Type': 'application/json',
-    Authorization: `Bearer ${localStorage.getItem('accessToken')}`
+    Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+    'ngrok-skip-browser-warning': 'true'
   }
 })
 

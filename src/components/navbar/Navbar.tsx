@@ -111,7 +111,7 @@ export const Navbar: React.FC = () => {
           <div className='md:hidden flex items-center'>
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className='text-gray-300 hover:text-white focus:outline-none'
+              className='text-gray-700 hover:text-black focus:outline-none transition-transform duration-300'
             >
               <svg
                 className='h-6 w-6'
@@ -133,6 +133,7 @@ export const Navbar: React.FC = () => {
       </div>
 
       {/* Mobile menu */}
+
       {isMenuOpen && (
         <div className='md:hidden'>
           <div className='space-y-1 px-2 pt-2 pb-3'>
@@ -144,7 +145,7 @@ export const Navbar: React.FC = () => {
                     setIsMenuOpen(false) // Đóng menu trước khi điều hướng
                     handleNavigation(path)
                   }}
-                  className='block px-3 py-2 rounded-md text-base font-medium text-white hover:bg-gray-700'
+                  className='block px-3 py-2 rounded-md text-base font-medium hover:text-primary'
                 >
                   {label}
                 </button>
@@ -152,13 +153,61 @@ export const Navbar: React.FC = () => {
             )}
             {access_token && (
               <>
-                <button
-                  className='px-3 py-2 rounded-md text-base font-medium text-white hover:bg-gray-700'
-                  onClick={logout}
-                >
-                  Logout
-                </button>
-                <button>{username}</button>
+                <DropdownMenu>
+                  <DropdownMenuTrigger>
+                    <Button className='block w-full text-left'>{username}</Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent className='bg-white'>
+                    <DropdownMenuItem>
+                      <button
+                        className='rounded-md flex gap-2 items-center'
+                        onClick={() => {
+                          setIsMenuOpen(false) // Đóng menu
+                          navigate(ROUTES.user.path)
+                        }}
+                      >
+                        <User className='w-4 h-4 text-black' />
+                        Thông tin cá nhân
+                      </button>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem>
+                      <button
+                        className='rounded-md flex gap-2 items-center'
+                        onClick={() => {
+                          setIsMenuOpen(false) // Đóng menu
+                          navigate(ROUTES.History.path)
+                        }}
+                      >
+                        <History className='w-4 h-4 text-black' />
+                        Lịch sử đơn hàng
+                      </button>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem>
+                      <button
+                        className='rounded-md flex gap-2 items-center'
+                        onClick={() => {
+                          setIsMenuOpen(false) // Đóng menu
+                          navigate(ROUTES.CustomerCoupon.path)
+                        }}
+                      >
+                        <SquarePercent className='w-4 h-4 text-black' />
+                        Mã giảm của tôi
+                      </button>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem>
+                      <button
+                        className='rounded-md flex gap-2 items-center'
+                        onClick={() => {
+                          setIsMenuOpen(false) // Đóng menu
+                          logout()
+                        }}
+                      >
+                        <LogOutIcon className='w-4 h-4 text-black' />
+                        Đăng xuất
+                      </button>
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
               </>
             )}
           </div>
