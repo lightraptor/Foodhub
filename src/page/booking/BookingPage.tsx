@@ -48,7 +48,7 @@ export const BookingPage = () => {
 
   return (
     <>
-      <div className='flex flex-col-reverse md:flex-row h-srceen'>
+      <div id='table' className='flex flex-col-reverse md:flex-row h-srceen'>
         <div className='relative w-full md:w-1/2  overflow-auto h-[calc(100vh-4rem)] p-4'>
           <img src={restaurantBg} alt='' className='w-full h-full object-cover rounded-xl' />
           <div className='absolute inset-0 bg-[#000] opacity-50 rounded-xl m-4'></div>

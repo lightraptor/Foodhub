@@ -52,7 +52,7 @@ const CartPage = () => {
 
   return (
     <>
-      <div className='container mx-auto'>
+      <div className='container mx-auto py-10'>
         <h1 className='text-2xl font-bold my-8'>Xem lại giỏ hàng</h1>
         {data.length > 0 ? (
           <div className='flex flex-row gap-2'>

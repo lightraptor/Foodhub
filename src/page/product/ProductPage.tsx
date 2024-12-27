@@ -100,7 +100,7 @@ export const ProductPage = () => {
   }
 
   return (
-    <div className='container mx-auto'>
+    <div className='container mx-auto py-10'>
       <h1 className='text-3xl font-bold text-center my-8'>Danh sách sản phẩm</h1>
       <FilterProduct onApplyFilter={applyFilter} />
 

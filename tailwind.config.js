@@ -7,6 +7,9 @@ export default {
   theme: {
     extend: {
       // Mở rộng cấu hình mặc định
+      animation: {
+        'spin-slow': 'spin 20s linear infinite'
+      },
       colors: {
         // Sử dụng bảng màu từ biến COLORS
         ...customColors,

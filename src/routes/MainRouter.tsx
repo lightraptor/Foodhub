@@ -5,6 +5,7 @@ import {
   BookingPage,
   CustomerCouponPage,
   HistoryPage,
+  HomePage,
   LoginPage,
   PaymentPage,
   ProductDetailPage,
@@ -54,7 +55,7 @@ export const MainRouter = () => {
       path: ROUTES.Home.path,
       element: useRouteRender(
         <Layout>
-          <BookingPage />
+          <HomePage />
         </Layout>
       )
     },

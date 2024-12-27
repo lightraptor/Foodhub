@@ -12,7 +12,7 @@ const OrderPage = () => {
     navigate(-1) // Quay về trang trước
   }
   return (
-    <div className='container mx-auto'>
+    <div className='container mx-auto py-10'>
       <div className='flex justify-between items-center my-5'>
         <button
           onClick={handleBack}
