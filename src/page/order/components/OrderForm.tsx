@@ -114,7 +114,7 @@ const OrderForm = ({ orderType }: { orderType: number }) => {
       customerName: values.name,
       customerPhone: values.phone,
       shippingAddress: orderType === 1 ? 'tại quán' : values.address || '',
-      couponId: selectedCouponId
+      couponId: selectedCouponId === '' ? null : selectedCouponId
     }
     console.log(payload)
     try {

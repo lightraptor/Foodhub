@@ -18,7 +18,7 @@ interface orderPost {
   customerName: string
   customerPhone: string
   shippingAddress: string
-  couponId: string
+  couponId: string | null
 }
 
 interface ApiResponse<T> {
