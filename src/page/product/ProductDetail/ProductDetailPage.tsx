@@ -61,7 +61,7 @@ export function ProductDetailPage() {
     setQuantity((prev) => Math.max(1, prev - 1))
   }
 
-  const fetchProduct = async ({ id }: { id: string }) => {
+  const fetchProduct = async () => {
     try {
       const response = await fetchProductById({ id: id || '' })
       if (!response.success) {
@@ -129,7 +129,7 @@ export function ProductDetailPage() {
     }
   }
 
-  const fetchListReviews = async ({ id }: { id: string }) => {
+  const fetchListReviews = async () => {
     try {
       // Fetch comments from API
       const response = await fetchReviewPagging({ ProductId: id })
@@ -141,7 +141,7 @@ export function ProductDetailPage() {
       console.log(data.items)
       setComments(data.items)
       setNumberReview(data.totalRecord)
-      fetchAverageReview({ id })
+      fetchAverageReview({ id: id || '' })
     } catch (error) {
       console.error('Error fetching comments:', error)
     }
@@ -149,17 +149,14 @@ export function ProductDetailPage() {
 
   useEffect(() => {
     if (id) {
-      fetchProduct({ id })
-      fetchListReviews({ id })
-      fetchAverageReview({ id })
+      fetchProduct()
+        .then(() => fetchListReviews())
+        .then(() => fetchAverageReview({ id }))
+        .catch((error) => console.error('Error loading product details:', error))
     } else {
       console.error('No product ID provided')
     }
   }, [id])
-
-  useEffect(() => {
-    console.log(comments)
-  }, [comments])
 
   return (
     <div className='container mx-auto px-4 py-8'>
@@ -266,14 +263,16 @@ export function ProductDetailPage() {
       </div>
 
       {/* Comment Section */}
-      {id !== undefined && (
-        <CommentSection comments={comments} fetchData={() => fetchListReviews({ id })} productId={id} />
-      )}
+      {id !== undefined && <CommentSection comments={comments} fetchData={() => fetchListReviews()} productId={id} />}
       <div className='mt-8'>
         <h2 className='text-xl font-bold mb-4'>Sản phẩm liên quan</h2>
         <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4'>
           {relatedProducts.map((relatedProduct) => (
-            <div key={relatedProduct.id} className='bg-white rounded-lg p-4 shadow-md'>
+            <div
+              onClick={() => window.location.replace(`/product/${relatedProduct.id}`)}
+              key={relatedProduct.id}
+              className='bg-white rounded-lg p-4 shadow-md'
+            >
               <img
                 src={relatedProduct?.thumbnail}
                 alt={relatedProduct.name}
