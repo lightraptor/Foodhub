@@ -75,11 +75,11 @@ export function ProductDetailPage() {
   }
 
   useEffect(() => {
-    fetchRetatedProduct({ id: productItem?.menuDto.id || '' })
+    fetchRetatedProduct({ id: productItem?.categoryDto.id || '' })
   }, [productItem?.menuDto.id])
   const fetchRetatedProduct = async ({ id }: { id: string }) => {
     try {
-      const response = await fetchFilterProduct({ menuId: id, Inactive: true })
+      const response = await fetchFilterProduct({ categoryId: id, Inactive: true })
       if (!response.success) {
         console.error(response.message)
         return

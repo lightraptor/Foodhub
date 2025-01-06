@@ -15,7 +15,7 @@ export const PaymentPage = () => {
 
   return (
     <>
-      <div className='container mx-auto flex flex-col justify-center items-center'>
+      <div className='container mx-auto flex flex-col justify-center items-center py-10'>
         <img src={check} alt='check' className='w-24 h-24 mt-10' />
         {paymentStatus === '00' ? (
           <p className='text-2xl font-bold mt-4'>Thanh toán thành công</p>
