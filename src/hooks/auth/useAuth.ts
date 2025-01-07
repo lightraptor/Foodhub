@@ -37,9 +37,10 @@ export const useAuth = () => {
       const res = await AuthenApis.doRegisterRequest(params)
 
       if (res?.data?.success) {
+        localStorage.setItem('confirmEmail', params.email)
         toast.success(res?.data?.message, { autoClose: 3000 })
         //console.log('Registration successful:', res?.data?.message)
-        navigate(ROUTES.Login.path)
+        navigate(ROUTES.Verify.path)
       } else {
         console.error('Registration failed:', res?.data?.message)
       }

@@ -32,9 +32,9 @@ export const RegisterPage: React.FC = () => {
   return (
     <div className='min-h-screen flex items-center justify-center bg-gray-100 p-4'>
       <div className='max-w-md w-full bg-white shadow-md rounded-lg p-8'>
-        <h1 className='text-2xl font-bold mb-2 text-gray-800'>Register</h1>
+        <h1 className='text-2xl font-bold mb-2 text-gray-800'>Đăng ký</h1>
         <p className='mb-3'>
-          Already have an account?{' '}
+          Bạn đã có tài khoản đăng nhập?{' '}
           <Link to='/login' className='text-[#0765ff]'>
             Login
           </Link>
@@ -60,7 +60,7 @@ export const RegisterPage: React.FC = () => {
           {/* Password Field */}
           <div>
             <label htmlFor='password' className='block text-sm font-medium text-gray-700'>
-              Password
+              Mật khẩu
             </label>
             <input
               id='password'
@@ -77,7 +77,7 @@ export const RegisterPage: React.FC = () => {
           {/* Confirm Password Field */}
           <div>
             <label htmlFor='confirmPassword' className='block text-sm font-medium text-gray-700'>
-              Confirm Password
+              Xác nhận mật khẩu
             </label>
             <input
               id='confirmPassword'
@@ -96,7 +96,7 @@ export const RegisterPage: React.FC = () => {
             type='submit'
             className='w-full bg-[#007BFF] text-[#fff] py-2 px-4 rounded hover:bg-[#0069d9] focus:outline-none focus:ring-2 focus:ring-blue-400'
           >
-            Submit
+            Đăng ký tài khoản
           </button>
         </form>
       </div>

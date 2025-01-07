@@ -1,8 +1,8 @@
 import { Star, StarOff } from 'lucide-react'
 
-// export const baseURL = 'https://192.168.12.71:7143'
+export const baseURL = 'https://192.168.12.46:7143'
 
-export const baseURL = 'https://8d81-171-240-141-139.ngrok-free.app'
+// export const baseURL = 'https://8d81-171-240-141-139.ngrok-free.app'
 
 export function formatToVND(amount: number): string {
   if (isNaN(amount)) {

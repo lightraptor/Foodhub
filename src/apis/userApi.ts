@@ -10,6 +10,24 @@ const instance = axios.create({
   }
 })
 
+interface responseVerify {
+  isSuccess: boolean
+  message: string
+}
+
+export const postVerify = async ({ email, code }: { email: string; code: string }): Promise<responseVerify> => {
+  try {
+    const response: AxiosResponse<responseVerify> = await instance.post('/api/Account/verify-email', {
+      email,
+      code
+    })
+    return response.data
+  } catch (error) {
+    console.error('Error fetching menus:', error)
+    throw error
+  }
+}
+
 export const getUserId = async (): Promise<string> => {
   try {
     const response: AxiosResponse<string> = await instance.get(`/api/user/current-user`)

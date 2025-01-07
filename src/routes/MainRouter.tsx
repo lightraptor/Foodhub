@@ -9,7 +9,8 @@ import {
   LoginPage,
   PaymentPage,
   ProductDetailPage,
-  ProductPage
+  ProductPage,
+  VerifyAccountPage
 } from '@/page'
 import CartPage from '@/page/cart/CartPage'
 import CouponPage from '@/page/coupon/CouponPage'
@@ -27,6 +28,14 @@ export const MainRouter = () => {
       element: useRouteRender(
         <Layout>
           <HistoryPage />
+        </Layout>
+      )
+    },
+    {
+      path: ROUTES.Verify.path,
+      element: useRouteRender(
+        <Layout>
+          <VerifyAccountPage />
         </Layout>
       )
     },

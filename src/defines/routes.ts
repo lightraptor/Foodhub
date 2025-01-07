@@ -16,7 +16,8 @@ export const AUTHENTICATION_ROUTES = {
 
 export const UN_AUTHENTICATION_ROUTES = {
   Login: { path: '/login', label: 'Login' },
-  Register: { path: '/register', label: 'Register' }
+  Register: { path: '/register', label: 'Register' },
+  Verify: { path: '/verify', label: 'Verify' }
 }
 
 export const ROUTES = {

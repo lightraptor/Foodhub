@@ -31,9 +31,9 @@ export const LoginPage = () => {
       <form onSubmit={handleSubmit(onSubmit)} className='bg-white p-6 rounded shadow-md w-full max-w-sm'>
         <h1 className='text-xl font-bold mb-2'>Login</h1>
         <p className='mb-2 text-sm'>
-          Don't have an account?{' '}
+          Bạn chưa có tài khoản Foodhub ?{' '}
           <Link to='/register'>
-            <span className='text-[#007BFF]'> Sign up</span>
+            <span className='text-[#007BFF]'> Đăng kí ngay</span>
           </Link>
         </p>
         {/* Email Field */}
@@ -55,7 +55,7 @@ export const LoginPage = () => {
         {/* Password Field */}
         <div className='mb-4'>
           <label htmlFor='password' className='block text-sm font-medium mb-2'>
-            Password
+            Mật khẩu
           </label>
           <input
             type='password'
@@ -73,7 +73,7 @@ export const LoginPage = () => {
           type='submit'
           className='w-full bg-[#007BFF] text-[#fff] py-2 px-4 rounded hover:bg-[#0069d9] focus:outline-none focus:ring-2 focus:ring-blue-400'
         >
-          Submit
+          Đăng nhập
         </button>
       </form>
     </div>
