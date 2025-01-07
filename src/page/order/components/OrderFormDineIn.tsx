@@ -6,6 +6,7 @@ import { toast } from 'react-toastify'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { fetchGetTable } from '@/apis/tableApi'
 import { TableItem } from '@/types'
+import { useNavigate } from 'react-router'
 
 type FormData = {
   name: string
@@ -21,6 +22,7 @@ type Errors = {
 }
 
 export const OrderFormDineIn = ({ orderType }: { orderType: number }) => {
+  const navigation = useNavigate()
   const [formData, setFormData] = useState<FormData>({
     name: '',
     phone: '',
@@ -84,7 +86,8 @@ export const OrderFormDineIn = ({ orderType }: { orderType: number }) => {
       customerName: formData.name,
       customerPhone: formData.phone,
       shippingAddress: orderType === 1 ? 'tại quán' : formData.address || '',
-      discountAmount: 0
+      discountAmount: 0,
+      couponId: null
     }
 
     try {
@@ -94,6 +97,7 @@ export const OrderFormDineIn = ({ orderType }: { orderType: number }) => {
         return
       }
       toast.success('Order successfully', { autoClose: 1000 })
+      navigation('/product')
     } catch (error) {
       console.error('Error submitting order:', error)
     }
